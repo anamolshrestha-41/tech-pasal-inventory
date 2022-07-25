@@ -1,0 +1,173 @@
+.supplier-d-details {
+  display: flex;
+  flex-direction: column;
+  /* background-color: red; */
+  position: relative;
+}
+
+.supplier-information {
+  display: flex;
+
+  margin: 10px 10px 0px 0px;
+  background-color: white;
+  flex: 1;
+  /* max-width: calc(100% - 260px); */
+
+  margin-bottom: 10px;
+}
+.supplier-information-bar {
+  display: flex;
+}
+
+.supplier-d-description {
+  display: flex;
+  /* background-color: green; */
+  flex: 1;
+}
+.supplier-image {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+
+  flex-basis: 200px;
+  flex-shrink: 0;
+  flex-grow: 0;
+  /* background-color: pink; */
+}
+.supplier-image > div {
+  height: 200px;
+  width: 200px;
+  margin-right: 10px;
+  /* background-color: green; */
+}
+.supplier-image > div > img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.supplier-full-details {
+  flex: 1;
+  /* background-color: pink; */
+}
+.supplier-full-details > h3 {
+  margin: 0px;
+  padding-left: 5px;
+  font-size: 24px;
+  text-align: left;
+}
+.supplier-full-details > div {
+  display: flex;
+  font-weight: 600;
+  align-items: center;
+
+  padding: 0px;
+  margin: 10px;
+}
+
+.supplier-full-details > div > p {
+  padding-left: 10px;
+
+  margin: 0px;
+  font-weight: 200;
+  text-transform: capitalize;
+}
+.supplier-address-details {
+}
+
+.product-supplier-info {
+  width: 250px;
+
+  background-color: white;
+
+  margin: 10px 0px 10px 0px;
+}
+
+.supplier-account-update {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.supplier-account-update > h3 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 15px 0px 0px 0px;
+  gap: 10px;
+}
+
+.supplier-profile-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+.supplier-profile-view > h4 {
+  margin: 0px;
+
+  padding: 0px;
+}
+
+.supplier-description-material {
+  display: flex;
+  flex-direction: column;
+}
+.supplier-description-material > h6 {
+  text-align: start;
+
+  width: 100%;
+  font-size: 16px;
+  margin: 0px;
+}
+
+.product-import-details {
+}
+.product-import-d-details > h3 {
+  margin: 0px 0px 10px 0px;
+  padding-left: 5px;
+  font-size: 20px;
+
+
+}
+.product-import-d-details > div {
+
+  font-weight: 600;
+  align-items: center;
+
+  padding: 0px;
+  margin: 0px;
+}
+
+.product-import-d-details > div > p {
+  padding-left: 10px;
+
+  margin: 0px;
+  font-weight: 200;
+  text-transform: capitalize;
+}
+
+
+.supplier-import-filter-bar{
+    background-color: white;
+    display: flex;
+    gap: 20px;
+    padding: 10px;
+    border: 1px;
+    border-style: solid;
+    border-color: #d3d3d3;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    }
+    
+    
+    
+    .supplier-import-list-menu{
+        text-transform: capitalize;
+        font-weight: bold;
+        
+       
+    }

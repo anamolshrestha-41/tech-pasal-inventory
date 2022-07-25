@@ -1,0 +1,68 @@
+.customers {
+  display: flex;
+}
+
+.customers-bar {
+  /* background-color: red;  */
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  max-width: calc(100% - 250px) !important;
+}
+.customer-bar-item {
+  height: 200px;
+  /* background-color: blue; */
+  width: 99%;
+  margin: 5px 5px 5px 0px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
+ 
+}
+.customer-bar-item:hover {
+  cursor: pointer;
+}
+.customer-manage-bar {
+  background-color: white;
+  width: 250px;
+  position: fixed;
+  right: 0;
+  padding: 5px;
+  height: calc(100vh - 56px);
+  display: flex;
+  flex-direction: column;
+
+}
+.customer-account-manage-bar{
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.selected-customer-info>div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+}
+.customer-account-manage-bar > h3,h5 {
+
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  justify-content: center;
+  padding: 0px;
+  margin: 0px;
+}
+
+
+
+.customer-manage-top-bar {
+  position: absolute;
+  top: 0px;
+}
+
+.customer-account-manage-bar{
+
+}

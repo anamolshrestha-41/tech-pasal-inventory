@@ -1,0 +1,210 @@
+.product-details{
+    display: flex;
+    flex-direction: column;
+    /* background-color: red; */
+    position: relative;
+    
+    }
+    
+    
+    .product-information{
+        display: flex;
+    
+       margin: 10px 10px 0px 0px;
+        background-color:white;
+        flex: 1;
+        /* max-width: calc(100% - 260px); */
+        bproduct-radius: 5px;
+        margin-bottom: 10px;
+        
+    }
+    .product-information-bar{
+        display: flex;
+        
+    }
+    
+    .product-description{
+    display: flex;
+    /* background-color: green; */
+    flex: 1;
+    }
+    .product-image{
+        margin-top: 30px;
+        display: flex;
+        justify-content: center;
+     
+    flex-basis: 200px;
+    flex-shrink: 0;
+    flex-grow: 0;
+    /* background-color: pink; */
+    
+    }
+    .product-image>div{
+        height: 200px;
+        width: 200px;
+        margin-right: 10px;
+        /* background-color: green; */
+    }
+    .product-image>div>img{
+        height: 100%;
+        width: 100%;
+    object-fit: cover;
+    }
+    
+    .product-full-details{
+        flex: 1;
+        /* background-color: pink; */
+    
+    }
+    .product-full-details>h3{
+        margin: 0px;
+        padding-left: 5px;
+        font-size: 24px;
+        text-align: left;
+    }
+    .product-full-details>div{
+        display: flex;
+        font-weight: 600;
+        align-items: center;
+     
+        padding: 0px;
+        margin: 10px;
+    }
+    
+    .product-full-details>div>p{
+        padding-left: 10px;
+    
+    
+        margin: 0px;
+        font-weight: 200;
+        text-transform: capitalize;
+    }
+    .product-address-details{
+    
+    }
+    
+    .product-supplier-info{
+        width: 250px;
+    
+     
+    
+        background-color:white;
+   
+        margin: 10px 0px 10px 0px;
+    
+        
+    
+    
+    }
+   
+    
+ 
+    
+    
+    .product-account-update{
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      
+    }
+    .product-account-update>h3{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+       margin: 15px 0px 0px 0px;
+       gap:10px
+    }
+    
+    .supplier-profile-view{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 5px;
+        gap: 5px;
+        margin-bottom: 10px;
+
+    }
+    .supplier-profile-view>h4{
+        margin: 0px;
+        
+        padding: 0px;
+       
+    }
+
+    .product-description-material{
+        display: flex;
+        flex-direction: column;
+ 
+     
+    }
+    .product-description-material>h6{
+        text-align: start;
+      
+        width: 100%;
+        font-size:16px;
+        margin: 0px;
+     
+    }
+    .product-description-material>ul{
+        list-style-position: inside;
+        list-style-type: none;
+        padding-left: 0;
+    
+        width: 100%;
+        padding-left: 15px;
+        margin:0px;
+      
+    }
+    .product-description-material>ul>li{
+        display: flex;
+        align-items: center;
+        margin: 0px;
+      gap: 5px;
+     height: 40px;
+     padding-left: 0px;
+     /* background-color: red; */
+     margin-left: 0px;
+     color: gray;
+     
+
+    }
+    .product-description-material>ul>li>p{
+        color: gray;
+    }
+    
+    
+
+.product-import-details{
+    background-color: white;
+}
+    .product-import-details>h3{
+        margin: 0px;
+        padding-left: 5px;
+        font-size: 24px;
+        text-align: left;
+    }
+    .product-import-details>div{
+        display: flex;
+        font-weight: 600;
+        align-items: center;
+     
+        padding: 0px;
+        margin: 10px;
+    }
+    
+    .product-import-details>div>p{
+        padding-left: 10px;
+    
+    
+        margin: 0px;
+        font-weight: 200;
+        text-transform: capitalize;
+    }
+
+    .product-sales-details>h3{
+        margin: 5px;
+        padding-left: 5px;
+        font-size: 24px;
+        text-align: left;
+    }

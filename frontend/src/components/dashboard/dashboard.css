@@ -1,0 +1,42 @@
+.dashboard{
+/* background-color: green; */
+
+}
+.dashboard>h3{
+    text-align: left;
+}
+
+.dashboard-details{
+display: flex;
+justify-content: space-between;
+}
+.dashboard-details>div{
+   
+    flex: 0.3;
+    max-width: 200px;
+    background-color: #ffffff;
+    border-radius: 5px;
+}
+
+.short-table-heading{
+   margin: 0px;
+   
+}
+.short-table-heading>h3{
+    height: 30px;
+    display: flex;
+    justify-content: space-between;
+    /* background-color: red; */
+    align-items: center;
+    padding: 0px;
+}
+
+
+
+.view-details{
+    color: blue;
+    font-weight: 100;
+    font-size: 16px;
+    padding: 20px;
+}
+

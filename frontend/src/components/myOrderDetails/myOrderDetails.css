@@ -1,0 +1,142 @@
+.my-order-details{
+    display: flex;
+    flex-direction: column;
+    /* background-color: red; */
+    position: relative;
+    
+    }
+    
+    
+    .my-order-information{
+        display: flex;
+    
+       margin: 10px 10px 0px 0px;
+        background-color:white;
+        flex: 1;
+        /* max-width: calc(100% - 260px); */
+        bmy-order-radius: 5px;
+        margin-bottom: 10px;
+        
+    }
+    .my-order-information-bar{
+        display: flex;
+        
+    }
+    
+    .my-order-description{
+    display: flex;
+    /* background-color: green; */
+    flex: 1;
+    }
+    .product-image{
+        margin-top: 30px;
+        display: flex;
+        justify-content: center;
+     
+    flex-basis: 200px;
+    flex-shrink: 0;
+    flex-grow: 0;
+    /* background-color: pink; */
+    
+    }
+    .product-image>div{
+        height: 200px;
+        width: 200px;
+        margin-right: 10px;
+        /* background-color: green; */
+    }
+    .product-image>div>img{
+        height: 100%;
+        width: 100%;
+    object-fit: cover;
+    }
+    
+    .my-order-full-details{
+        flex: 1;
+        /* background-color: pink; */
+    
+    }
+    .my-order-full-details>h3{
+        margin: 0px;
+        padding-left: 5px;
+        font-size: 24px;
+        text-align: left;
+    }
+    .my-order-full-details>div{
+        display: flex;
+        font-weight: 600;
+        align-items: center;
+     
+        padding: 0px;
+        margin: 10px;
+    }
+    
+    .my-order-full-details>div>p{
+        padding-left: 10px;
+    
+    
+        margin: 0px;
+        font-weight: 200;
+        text-transform: capitalize;
+    }
+    .my-order-address-details{
+    
+    }
+    
+    .my-order-shipping-info{
+        width: 250px;
+    
+     
+    
+        background-color:white;
+        bmy-order-radius: 5px;
+        margin: 10px 0px 0px 0px;
+    
+        
+    
+    
+    }
+    .my-order-shipping-address{
+        /* height: 50%; */
+        margin-bottom: 10px;
+    }
+    
+    .my-order-shipping-address>h3{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+       margin: 8px;
+      
+       
+    }
+    
+    
+    .my-order-account-update{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .my-order-account-update>h3{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 8px;
+    }
+    
+    .supplier-profile-view{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 5px;
+        gap: 5px;
+        margin-bottom: 15px;
+
+    }
+    .supplier-profile-view>h4{
+        margin: 0px;
+        padding: 0px;
+       
+    }
+    
+    

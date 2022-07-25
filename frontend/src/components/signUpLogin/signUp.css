@@ -1,0 +1,139 @@
+
+   .signup-form>div>input,.address>div>input,.contact>div>input {
+        width: 80%;
+        margin: 20px;
+        height: 40px;
+        border-radius: 25px;
+        padding: 2px 10px 2px 10px;
+        font-size: large;
+        letter-spacing: 0.5px;
+        background-color: rgb(41, 239, 179);
+      }
+
+
+
+label{
+font-size: 22px;
+font-weight: bold ;
+}
+
+.signup {
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.signup-box {
+  padding: 20px;
+  align-items: center;
+  background-color: #ede9e9;
+
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+
+}
+.logo-signup{
+  align-self: flex-start;
+  height: 100px;
+  width: 100%;
+  display: flex;
+  
+}
+.logo-signup>h3{
+    width: 100%;
+    display: flex;
+    padding-left: 150px;
+    font-size: 30px;
+    color:   rgb(12, 177, 128);;
+    
+  
+}
+.logo-signup > img {
+  height: 100%;
+  width: 100px;
+  object-fit: cover;
+}
+
+.signup-form {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+.signup-form>div{
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    justify-content: center;
+}
+
+.signup-form > div > label {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.customer-type {
+  display: flex;
+  gap: 20px;
+ 
+}
+.customer-type > label {
+  font-size: 20px;
+  font-weight: bold;
+  padding-top: 5px;
+}
+
+.address{
+    display: flex;
+    justify-content: space-between;
+    padding-left: 20px;
+}
+
+.address>div{
+    display: flex;
+    align-items: center;
+}
+
+.contact{
+    display: flex;
+    justify-content: space-between;
+    padding-left: 20px;
+}
+
+.contact>div{
+    display: flex;
+    align-items: center;
+}
+.profile-image{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px ;
+    gap: 50px;
+}
+
+
+.profile-image> input::file-selector-button{
+    background-color: rgb(41, 239, 179);
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid black;
+   
+  }
+  .profile-image>input{
+    background-color:transparent !important;
+  }
+
+
+  .login-return{
+    font-size: large;
+    font-weight: bold;
+    color:  rgb(12, 177, 128);
+    margin: 20px;
+  }

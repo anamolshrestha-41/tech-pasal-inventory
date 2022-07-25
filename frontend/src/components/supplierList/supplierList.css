@@ -1,0 +1,98 @@
+.supplier-list{
+    display: flex;
+
+    flex-direction: row;
+    text-align: left;
+}
+
+.supplier-logo{
+ 
+min-height: 200px;
+min-width: 200px;
+max-width: 300px;
+max-height: 300px;
+
+}
+
+.supplier-logo>img{
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+
+}
+
+.supplier-description{
+    display: flex;
+    flex-direction: column;
+    background-color: #f0f0f0;
+    align-items: flex-start;
+    padding: 5px 5px 5px 10px;
+    gap: 0px;
+    height: 100%;
+}
+
+.supplier-name{
+    width: 100%;
+    display: flex;
+    align-items: center;
+font-size: 20px;
+letter-spacing: 1px;
+justify-content: space-between;
+
+}
+.supplier-country{
+font-size: 16px;
+
+}
+.supplier-email{
+    padding: 0px;
+    font-size: 16px;
+   
+}
+
+.supplier-contact-number{
+    padding: 0px;
+    color: rgb(96, 91, 91);
+}
+.supplier-contact-number>span{
+    color: rgb(96, 91, 91);
+    padding: 0px 5px 0px 0px;
+}
+
+.supplier-address{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    /* background-color: gold; */
+    padding: 0px;
+    height: 40px;
+    overflow: scroll;   
+    overflow: hidden;
+
+}
+
+.supplier-address>p{
+padding: 0;
+color: rgb(96, 91, 91);
+font-size: 16px;
+
+}
+
+.supplier-pinCode{
+display: flex;
+gap:10px
+
+}
+.supplier-pinCode>span{
+    color: rgb(96, 91, 91);
+}
+
+.supplier-details{
+text-align: left;
+/* background-color: red; */
+height: 65px;
+overflow: scroll;
+overflow: hidden;
+color:  gray;
+}

@@ -1,0 +1,132 @@
+
+
+
+.header{
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color:#ffff;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    border: 1px;
+    border-style: solid;
+    border-color: #d3d3d3;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+
+}
+.header-left{
+display: flex;
+align-items: center;
+}
+.header-left:hover{
+  cursor: pointer;
+}
+.header-middle{
+    display: flex;
+    align-items: center;
+
+}
+
+.header-right{
+display: flex;
+align-items: center;
+}
+
+.site-logo{
+margin-left: 30px;
+margin-right: 10px;
+}
+.site-logo>img{
+    width: 36px;
+    height: 36px;
+    object-fit: cover;
+}
+
+.site-name{
+font-weight: bolder;
+font-style: italic;
+font-size: large;
+transform: rotate(-1deg);
+}
+
+#search {
+    background-color: #f8f8f8;
+    display: flex;
+    align-items: center;
+    height: 40px;
+ 
+  }
+  #search > input {
+    border: 1px;
+    border-style: solid;
+    border-color: #d3d3d3;
+  
+    padding: 1px 0px 1px 2px;
+    margin: 3px 0px 3px 0px;
+  
+    min-width: 100px;
+    width: 364px;
+    height: 91%;
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+  #search > input:focus {
+    outline: none !important;
+    border: 1.5px;
+    border-style: solid;
+    border-color: #a4aaf7;
+  }
+  .search-icon{
+    display: flex;
+    align-items: center;
+  }
+  .search-icon:hover{
+    cursor: pointer;
+  }
+  .search-icon > svg {
+    width: 40px;
+    height: 24px;
+    border: 1px;
+    border-style: solid;
+    border-color: #d3d3d3;
+    padding: 7px 0px 7px 0px;
+  }
+  
+  
+
+.header-right{
+  display: flex;
+}
+  
+  .profile{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-right: 10px;
+    padding: 0px 5px 0px 5px;
+    border-radius: 5px;
+  }
+
+  .header-right:hover{
+    cursor: pointer;
+    background-color: #edeeef;
+  }
+
+  .profile-name{
+    font-size: large;
+    font-weight: 500;
+  }
+  
+  .profile-menu-item{
+    display: flex;
+    gap: 15px;
+  }
+  
+  
+

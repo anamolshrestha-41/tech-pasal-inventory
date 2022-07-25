@@ -1,0 +1,126 @@
+.customer-details{
+display: flex;
+flex-direction: column;
+/* background-color: red; */
+position: relative;
+
+}
+
+
+.customer-information{
+    display: flex;
+
+   margin: 10px 10px 0px 0px;
+    background-color:white;
+    flex: 1;
+    /* max-width: calc(100% - 260px); */
+    border-radius: 5px;
+    
+}
+.customer-information-bar{
+    display: flex;
+    
+}
+
+.customer-description{
+display: flex;
+/* background-color: green; */
+flex: 1;
+}
+.customer-profile{
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+ 
+flex-basis: 200px;
+flex-shrink: 0;
+flex-grow: 0;
+
+}
+
+.customer-profile-details{
+    flex: 1;
+    /* background-color: pink; */
+
+}
+.customer-profile-details>div{
+    display: flex;
+    font-weight: 600;
+    align-items: center;
+ 
+    padding: 0px;
+    margin: 10px;
+}
+
+.customer-profile-details>div>p{
+    padding-left: 10px;
+
+
+    margin: 0px;
+    font-weight: 200;
+}
+.customer-address-details{
+
+}
+
+.customer-address-info{
+    width: 250px;
+
+ 
+
+    background-color:white;
+    border-radius: 5px;
+    margin: 10px 0px 0px 0px;
+
+    
+
+
+}
+.customer-shipping-address{
+    /* height: 50%; */
+    margin-bottom: 20px;
+}
+
+.customer-shipping-address>h3{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  
+   
+}
+
+
+.customer-account-update{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.customer-account-update>h3{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.customer-orders{
+    
+}
+
+.customer-orders-filter-bar{
+    background-color: white;
+display: flex;
+gap: 20px;
+padding: 10px;
+border: 1px;
+border-style: solid;
+border-color: #d3d3d3;
+border-top: none;
+border-right: none;
+border-left: none;
+}
+
+.customer-orders-list-menu{
+    text-transform: capitalize;
+    font-weight: bold;
+}

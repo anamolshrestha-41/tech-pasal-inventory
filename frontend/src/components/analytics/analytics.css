@@ -1,0 +1,80 @@
+.analytics{
+
+}
+
+.overview-analytics-bar{
+    display: flex;
+    /* background-color: white; */
+    
+}
+
+.overview-analytics-bar-item{
+background-color:white;
+width:25%;
+border-radius: 5px;
+margin: 2px;
+padding: 5px;
+padding-left: 25px;
+
+}
+
+
+.overview-analytics-bar-item>h3{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.overview-analytics-bar-item>h3>div{
+    display: flex;
+    gap: 10px;
+ 
+}
+
+.overview-analytics-bar-item>div{
+    font-size: 25px;
+    font-weight: bold;
+    text-align: start;
+}
+.analytics-bar-item-update{
+    font-size: 16px !important;
+    color: green;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+   
+}
+
+.analytics-bar{
+    display: flex;
+    gap: 10px;
+    height: 500px;
+    margin: 10px 0px 10px 0px;
+}
+
+.analytics-graph-bar{
+flex: 0.75;
+background-color: white;
+}
+.analytics-graph-bar-top{
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 0px 10px 0px 10px;
+border: 1px;
+border-style: solid;
+border-color: #d3d3d3;
+border-top: none;
+border-left: none;
+border-right: none;
+padding-bottom: 5px;
+}
+.analytics-graph-bar-top>h3{
+    font-size: 25px;
+
+    margin: 0px;
+}
+
+.analytics-graph-info-bar{
+flex: 0.25;
+background-color: white;
+}

@@ -1,0 +1,27 @@
+*{
+  text-decoration: none;
+  color: black;
+ 
+  
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+  padding: 0;
+  text-align: center;
+}
+
+
+.app {
+  text-align: center;
+  
+
+ 
+}
+
+.app-body{
+  display: flex;
+ 
+}
