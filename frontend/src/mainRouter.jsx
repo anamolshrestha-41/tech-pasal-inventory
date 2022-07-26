@@ -6,6 +6,7 @@ import CustomerDetails from './components/customerDetails/customerDetails';
 import Customers from './components/customers/customers';
 import Dashboard from './components/dashboard/dashboard';
 import ImportProducts from './components/importProducts/importProducts';
+import ManageBusiness from './components/manageBusiness/manageBusiness';
 import MyOrderDetails from './components/myOrderDetails/myOrderDetails';
 import MyOrders from './components/myOrders/myOrders';
 import OrderDetails from './components/orderDetails/orderDetails';
@@ -36,6 +37,7 @@ function MainRouter() {
             <Route exact path='/MYOrder/:myOrderId' element={<MyOrderDetails/>}></Route>
             <Route exact path='/Product/:productId' element={<ProductDetails/>}></Route>
             <Route exact path='/Supplier/:supplierId' element={<SupplierDetails/>}></Route>
+            <Route exact path='/Manage%20Business' element={<ManageBusiness/>}></Route>
             <Route exact path='/Alert' element={<Alert/>}></Route>
             
         </Routes>

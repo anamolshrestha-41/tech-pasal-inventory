@@ -8,6 +8,7 @@ import NativeSelect from "@mui/material/NativeSelect";
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { Input, MenuItem, Select } from '@mui/material';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 
 const categoryList = [
@@ -112,15 +113,16 @@ function Store() {
        
       </div>
       <div className="store-product-list">
-        <ProductItemCard/>
-        <ProductItemCard/>
-        <ProductItemCard/>
-        <ProductItemCard/>
-        <ProductItemCard/>
-         <ProductItemCard/>
-          <ProductItemCard/>
-           <ProductItemCard/> <ProductItemCard/>
-           <ProductItemCard/>
+        <Link to={`/store/product/123`}> <ProductItemCard/></Link>
+        <Link to={`/store/product/123`}> <ProductItemCard/></Link>
+        <Link to={`/store/product/123`}> <ProductItemCard/></Link>
+        <Link to={`/store/product/123`}> <ProductItemCard/></Link>
+        <Link to={`/store/product/123`}> <ProductItemCard/></Link>
+        <Link to={`/store/product/123`}> <ProductItemCard/></Link>
+        <Link to={`/store/product/123`}> <ProductItemCard/></Link>    <Link to={`/store/product/123`}> <ProductItemCard/></Link>
+        
+        
+        
 
       </div>
     </div> );

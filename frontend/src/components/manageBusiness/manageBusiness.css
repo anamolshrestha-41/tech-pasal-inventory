@@ -1,0 +1,21 @@
+.manage-business{
+display: flex;
+flex-direction: column;
+gap: 50px;
+
+}
+
+
+.manage-business-bar{
+    padding: 20px;
+display: flex;
+justify-content: space-between;
+}
+
+
+.manage-business-bar-item{
+min-height: 300px;
+background-color:white;
+width: 400px;
+border-radius: 5px;
+}
