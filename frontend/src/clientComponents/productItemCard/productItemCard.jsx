@@ -8,27 +8,31 @@ import Typography from "@mui/material/Typography";
 
 import productImageLogo from "../../demo/productImage.jpg";
 
-export default function ProductItemCard() {
+export default function ProductItemCard(props) {
+  const {image,name,brand,price}=props;
   return (
-    <Card sx={{ maxWidth: 250 }}>
+    <Card sx={{ maxWidth: 250,height:"400px" }}>
       <CardMedia
         component="img"
         alt="green iguana"
-        height="250"
-        image={productImageLogo}
+        height="250px"
+      
+        image={image}
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          Samsung F22
+          {name}
         </Typography>
 
         <Typography variant="body2" color="text.secondary">
-          Brand:Samsung
+          Brand:{brand}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Price:Nrs.10000
+          Price:Nrs.{price}
         </Typography>
       </CardContent>
     </Card>
   );
 }
+
+
