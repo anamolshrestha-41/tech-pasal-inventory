@@ -31,6 +31,7 @@ import {
 import { Link } from "react-router-dom";
 import DeleteConfirmationDialogModal from "../deleteConfirmationDialogModal/deleteConfirmationDialogModal";
 import OrderStatusChangeConfirmationDialog from "../statusChangeConfirmation/orderStatusChangeConfirmationDialog";
+import { useEffect } from "react";
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -107,7 +108,6 @@ function createData(
   productId,
   productImage,
   productName,
-  productVariant,
   supplierImage,
   supplierName,
   orderedDate,
@@ -122,7 +122,6 @@ function createData(
     productId,
     productImage,
     productName,
-    productVariant,
     supplierImage,
     supplierName,
     orderedDate,
@@ -133,7 +132,7 @@ function createData(
   };
 }
 
-const rows = [
+const row = [
   createData(
     1,
     10,
@@ -150,7 +149,7 @@ const rows = [
     40000
   ),
   createData(
-    2,
+    1,
     10,
     2,
     productImage,
@@ -165,37 +164,7 @@ const rows = [
     40000
   ),
   createData(
-    3,
-    10,
-    2,
-    productImage,
-    "Samsung F-22",
-    "black",
-    supplierImage,
-    "Autocad Technology pvt ltd",
-    "2022-3-55",
-    12,
-    "processing",
-    "unpaid",
-    40000
-  ),
-  createData(
-    4,
-    10,
-    2,
-    productImage,
-    "Samsung F-22",
-    "black",
-    supplierImage,
-    "Autocad Technology pvt ltd",
-    "2022-3-55",
-    12,
-    "processing",
-    "unpaid",
-    40000
-  ),
-  createData(
-    5,
+    1,
     10,
     2,
     productImage,
@@ -226,7 +195,9 @@ const rows = [
   ),
 ];
 
-export default function MyOrdersTable() {
+export default function MyOrdersTable(props) {
+  const { myOrderList } = props;
+  const[rows,setRows]=React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [myOrderToDeleteId, setMyOrderToDeleteId] = React.useState(null);
@@ -272,6 +243,33 @@ export default function MyOrdersTable() {
     console.log("My order", myOrderId, "deleted");
   };
 
+  useEffect(() => {
+    console.log(myOrderList);
+    if(rows.length==0){
+ myOrderList.map((myOrder) => {
+      rows.push(
+        createData(
+          myOrder.myOrderId,
+          myOrder.supplierId,
+          myOrder.productId,
+          myOrder.productImage.image_url,
+          myOrder.productName,
+          myOrder.supplierImage.image_url,
+          myOrder.supplierName,
+          myOrder.orderedDate,
+          myOrder.quantity,
+          myOrder.myOrderStatus,
+          myOrder.paymentStatus,
+          myOrder.totalPrice
+        )
+      );
+    });
+    }
+   
+
+    console.log(rows);
+  }, []);
+
   return (
     <div>
       <TableContainer component={Paper}>
@@ -284,7 +282,6 @@ export default function MyOrdersTable() {
             <TableRow>
               <TableCell>Id</TableCell>
               <TableCell>Product</TableCell>
-              <TableCell>Variant</TableCell>
               <TableCell>Supplier</TableCell>
               <TableCell>Qty</TableCell>
               <TableCell>Ordered Date</TableCell>
@@ -322,7 +319,6 @@ export default function MyOrdersTable() {
                     {row.productName}
                   </Typography>
                 </TableCell>
-                <TableCell>{row.productVariant}</TableCell>
                 <TableCell>
                   <Typography
                     component={Stack}
@@ -342,7 +338,7 @@ export default function MyOrdersTable() {
                 <TableCell>{row.orderedDate}</TableCell>
                 <TableCell>{row.status}</TableCell>
                 <TableCell>{row.payment}</TableCell>
-                <TableCell>{row.total}</TableCell>
+                <TableCell>{parseInt(row.total)}</TableCell>
                 <TableCell>
                   <Typography
                     component={Stack}

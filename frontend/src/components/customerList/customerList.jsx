@@ -10,20 +10,30 @@ import FormatItalicIcon from "@mui/icons-material/FormatItalic";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import { Avatar, Stack, Typography } from "@mui/material";
-import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
+import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 
-function CustomerList() {
+function CustomerList(props) {
+  const {
+    profileImage,
+    name,
+    email,
+    contactNo,
+    state,
+    city,
+    street,
+    customerType,
+  } = props;
   return (
     <div className="customer-list">
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
-          width:"99%",
-        minWidth:"680px",
-       
+          width: "99%",
+          minWidth: "680px",
+
           height: "100%",
-          justifyContent:"space-between",
+          justifyContent: "space-between",
 
           border: (theme) => `1px solid ${theme.palette.divider}`,
           borderRadius: 1,
@@ -47,8 +57,11 @@ function CustomerList() {
           maxWidth={100}
           gap={2}
         >
-          <Avatar sx={{ width: 100, height: 100 }} src={customerImage} />
-          Jagadish Shrestha
+          <Avatar
+            sx={{ width: 100, height: 100 }}
+            src={profileImage.image_url}
+          />
+          {name}
         </Typography>
 
         <Divider orientation="vertical" variant="middle" flexItem />
@@ -56,67 +69,87 @@ function CustomerList() {
         <Typography
           component={Stack}
           direction="column"
-           alignSelf="center"
+          alignSelf="center"
           color="black"
           fontSize={20}
           padding={0}
           maxWidth={200}
           justifyContent="center"
-         
         >
-          <Typography  variant="subtitle1" gutterBottom component="div" >
+          <Typography variant="subtitle1" gutterBottom component="div">
             Contact Information
           </Typography>
           <Typography variant="subtitle2" gutterBottom component="div">
-            jagadish.sta@gmail.com
+            {email}
           </Typography>
           <Typography variant="subtitle2" gutterBottom component="div">
-           +977 9869194591
+            +977 {contactNo}
           </Typography>
         </Typography>
         <Divider orientation="vertical" variant="middle" flexItem />
         <Typography
           component={Stack}
           direction="column"
-           alignSelf="center"
+          alignSelf="center"
           color="black"
           fontSize={20}
           padding={0}
           maxWidth={200}
           justifyContent="center"
-         
         >
-          <Typography  variant="subtitle1" gutterBottom component="div" >
+          <Typography variant="subtitle1" gutterBottom component="div">
             Shipping Address
           </Typography>
           <Typography variant="subtitle2" gutterBottom component="div">
-            sankhu,kathmandu,Bagmati
+            {street},
           </Typography>
           <Typography variant="subtitle2" gutterBottom component="div">
-          Pan No:2354 5687 5797
+            {city}
+          </Typography>
+          <Typography variant="subtitle2" gutterBottom component="div">
+            {state}
           </Typography>
         </Typography>
         <Divider orientation="vertical" variant="middle" flexItem />
         <Typography
           component={Stack}
           direction="column"
-           alignSelf="center"
+          alignSelf="center"
           color="black"
           fontSize={20}
           padding={2}
           maxWidth={200}
           justifyContent="center"
           paddingRight={3}
-         
         >
-          <Typography  variant="subtitle1" gutterBottom component="div" >
+          <Typography variant="subtitle1" gutterBottom component="div">
             Account Status
           </Typography>
-          <Typography variant="subtitle2" gutterBottom component="div"sx={{display:"flex"}} alignItems="center">
-           <VerifiedUserIcon sx={{width:15,height:15,}}/> verified
+          <Typography
+            variant="subtitle2"
+            gutterBottom
+            component="div"
+          
+            alignItems="center"
+          >
+            {customerType}
           </Typography>
-          <Typography color="green" variant="subtitle2" gutterBottom component="div">
-   active
+          <Typography
+            variant="subtitle2"
+            gutterBottom
+            component="div"
+           
+          >
+            <div style={{display:"flex",alignItems:'center'}}>   <VerifiedUserIcon sx={{ width: 15, height: 15 }} /> verified</div>
+          
+          </Typography>
+          <Typography
+            color="green"
+            variant="subtitle2"
+            gutterBottom
+            component="div"
+          >
+            active
           </Typography>
         </Typography>
       </Box>

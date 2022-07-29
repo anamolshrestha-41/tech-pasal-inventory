@@ -36,3 +36,28 @@ export const addSupplier=(supplierData)=>{
       return err.response.data;
   })
   }
+
+
+  export const getSupplierNameAndImage=(supplierId)=>{
+
+    return  axios.get(`${process.env.REACT_APP_API_URI}/suppliernameandimage/${supplierId}`).then(response=>{
+      console.log(response);
+     return response.data.data;
+  }).catch(err=>{
+      console.log(err.response.data);
+      return err.response.data;
+  })
+  }
+
+
+
+  export const getSupplierLists=()=>{
+
+    return  axios.get(`${process.env.REACT_APP_API_URI}/supplier/lists`).then(response=>{
+      console.log(response);
+     return response.data.data;
+  }).catch(err=>{
+      console.log(err.response.data);
+      return err.response.data;
+  })
+  }

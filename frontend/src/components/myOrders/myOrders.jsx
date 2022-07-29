@@ -13,6 +13,7 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import OrdersTable from "../tables/orderTable";
 import MyOrdersTable from "../tables/myOrderTable";
+import { getShippedOrProcessingImportOrdersList } from "../../controllers/importOrderController";
 
 const filterOptions = createFilterOptions({
   matchFrom: "start",
@@ -31,6 +32,7 @@ function MyOrders() {
   const [activeOrderListMenu, setActiveOrderListMenu] =useState("All Orders");
   const [activeCategory, setActiveCategory] = useState(null);
   const[searchItem,setSearchItem]=useState(null);
+  const [myOrderList,setMyOrderList]=useState(null);
 
   const handleSearchItem=(e)=>{
    setSearchItem(e.target.value);
@@ -46,6 +48,14 @@ function MyOrders() {
     setActiveCategory(e.target.value);
   };
 
+
+useEffect(()=>{
+getShippedOrProcessingImportOrdersList().then(data=>{
+  console.log(data);
+  setMyOrderList(data);
+})
+},[])
+
   useEffect(() => {
     document.querySelectorAll(".my-orders-list-menu").forEach((element) => {
       // console.log(element.innerHTML);
@@ -57,6 +67,10 @@ function MyOrders() {
       }
     });
   }, [activeOrderListMenu]);
+
+  if(!myOrderList){
+    return <div>loading</div>
+  }
 
   return (
     <div className="my-orders">
@@ -168,7 +182,7 @@ function MyOrders() {
       </div>
 
       <div className="my-orders-bar">
-        <MyOrdersTable />
+        <MyOrdersTable  myOrderList={myOrderList}/>
       </div>
     </div>
   );
