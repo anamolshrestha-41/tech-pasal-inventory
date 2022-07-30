@@ -1,7 +1,7 @@
 import * as React from "react";
 import productImage from "../../demo/productImage.jpg";
-import supplierImage from '../../demo/supplierLogo.png'
-import {Link} from 'react-router-dom';
+import supplierImage from "../../demo/supplierLogo.png";
+import { Link } from "react-router-dom";
 
 import PropTypes from "prop-types";
 import { useTheme } from "@mui/material/styles";
@@ -24,7 +24,14 @@ import LastPageIcon from "@mui/icons-material/LastPage";
 import { Avatar, Button, Stack, TableHead, Typography } from "@mui/material";
 import DeleteConfirmationDialogModal from "../deleteConfirmationDialogModal/deleteConfirmationDialogModal";
 import ProductStatusChangeConfirmationDialog from "../statusChangeConfirmation/productStatusChangeConfirmationDialog";
-
+import {
+  deleteProductByStatus,
+  getProductByFilterStatus,
+  getPublishedOrUnpublishedProductList,
+  updateProductStatus,
+} from "../../controllers/productController";
+import { useSnackbar } from "notistack";
+import { useEffect } from "react";
 function TablePaginationActions(props) {
   const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
@@ -94,29 +101,127 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-function createData(productId,productImage, productName, category,supplierName,supplierImage, stock) {
-  return { productId,productImage, productName, category,supplierName,supplierImage, stock };
+function createData(
+  productId,
+  productImage,
+  productName,
+  category,
+  supplierName,
+  supplierImage,
+  stock,
+  price,
+  productStatus
+) {
+  return {
+    productId,
+    productImage,
+    productName,
+    category,
+    supplierName,
+    supplierImage,
+    stock,
+    price,
+    productStatus,
+  };
 }
 
-const rows = [createData(0, productImage, "samsung F-22", "mobile","Autocad Technology Pvt Ltd",supplierImage, 10),
-createData(1, productImage, "samsung F-22", "mobile","Autocad Technology Pvt Ltd",supplierImage, 10),
-createData(2, productImage, "samsung F-22", "mobile","Autocad Technology Pvt Ltd",supplierImage, 10),
-createData(3, productImage, "samsung F-22", "mobile","Autocad Technology Pvt Ltd",supplierImage, 10),
-createData(4, productImage, "samsung F-22", "mobile","Autocad Technology Pvt Ltd",supplierImage, 10),
-createData(5, productImage, "samsung F-22", "mobile","Autocad Technology Pvt Ltd",supplierImage, 10),
-createData(6, productImage, "samsung F-22", "mobile","Autocad Technology Pvt Ltd",supplierImage, 10),
-createData(7, productImage, "samsung F-22", "mobile","Autocad Technology Pvt Ltd",supplierImage, 10),
-createData(8, productImage, "samsung F-22", "mobile","Autocad Technology Pvt Ltd",supplierImage, 10),
-
+const row = [
+  createData(
+    0,
+    productImage,
+    "samsung F-22",
+    "mobile",
+    "Autocad Technology Pvt Ltd",
+    supplierImage,
+    10
+  ),
+  createData(
+    1,
+    productImage,
+    "samsung F-22",
+    "mobile",
+    "Autocad Technology Pvt Ltd",
+    supplierImage,
+    10
+  ),
+  createData(
+    2,
+    productImage,
+    "samsung F-22",
+    "mobile",
+    "Autocad Technology Pvt Ltd",
+    supplierImage,
+    10
+  ),
+  createData(
+    3,
+    productImage,
+    "samsung F-22",
+    "mobile",
+    "Autocad Technology Pvt Ltd",
+    supplierImage,
+    10
+  ),
+  createData(
+    4,
+    productImage,
+    "samsung F-22",
+    "mobile",
+    "Autocad Technology Pvt Ltd",
+    supplierImage,
+    10
+  ),
+  createData(
+    5,
+    productImage,
+    "samsung F-22",
+    "mobile",
+    "Autocad Technology Pvt Ltd",
+    supplierImage,
+    10
+  ),
+  createData(
+    6,
+    productImage,
+    "samsung F-22",
+    "mobile",
+    "Autocad Technology Pvt Ltd",
+    supplierImage,
+    10
+  ),
+  createData(
+    7,
+    productImage,
+    "samsung F-22",
+    "mobile",
+    "Autocad Technology Pvt Ltd",
+    supplierImage,
+    10
+  ),
+  createData(
+    8,
+    productImage,
+    "samsung F-22",
+    "mobile",
+    "Autocad Technology Pvt Ltd",
+    supplierImage,
+    10
+  ),
 ];
 
-export default function ProductsTable() {
+export default function ProductsTable(props) {
+  const { activeProductListMenu } = props;
+  const { enqueueSnackbar } = useSnackbar();
+  const [rows, setRows] = React.useState([]);
+  var myOrderList = [];
+  const [isChangeSucessfull, setIsChangeSucessfull] = React.useState(false);
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const[productToDeleteId,setProductToDeleteId]=React.useState(null);
+  const [productToDeleteId, setProductToDeleteId] = React.useState(null);
   const [statusToChangeId, setStatusToChangeId] = React.useState(null);
   const [deleteConfirmationDialogOpen, setDeleteConfirmationDialogOpen] =
-  React.useState(false);
+    React.useState(false);
   const [
     statusChangeConfirmationDialogOpen,
     setStatusChangeConfirmationDialogOpen,
@@ -135,8 +240,6 @@ export default function ProductsTable() {
     setPage(0);
   };
 
-
-
   const handleOnEditProduct = (e, productId) => {
     e.preventDefault();
     setStatusToChangeId(productId);
@@ -145,129 +248,229 @@ export default function ProductsTable() {
 
   const changeStatus = (productId, productStatus) => {
     console.log(productId, productStatus);
+    updateProductStatus(productId, productStatus).then((data) => {
+      console.log(data);
+      if (data.sucess == true) {
+        setIsChangeSucessfull(!isChangeSucessfull);
+        setRows([]);
+
+        enqueueSnackbar(data.message, {
+          variant: "success",
+          autoHideDuration: 2000,
+        });
+      } else {
+        enqueueSnackbar(data.error, {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      }
+    });
   };
 
-
-
-  const handleOnDeleteProduct = (e,productId) => {
+  const handleOnDeleteProduct = (e, productId) => {
     // change state of dialog modal
     e.preventDefault();
-    setProductToDeleteId(productId)
+    setProductToDeleteId(productId);
     setDeleteConfirmationDialogOpen(true);
   };
 
-  const deleteProduct=(productId)=>{
-    console.log("Product",productId,"deleted");
-  }
+  const deleteProduct = (productId) => {
+    console.log("Product", productId, "deleted");
+    deleteProductByStatus(productId).then((data) => {
+      console.log(data);
+      if (data.sucess == true) {
+        setIsChangeSucessfull(!isChangeSucessfull);
+
+        enqueueSnackbar(data.message, {
+          variant: "success",
+          autoHideDuration: 2000,
+        });
+      } else {
+        enqueueSnackbar(data.error, {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      }
+    });
+  };
+
+
+
+  React.useEffect(() => {
+    console.log(activeProductListMenu);
+    if (activeProductListMenu === "All Products") {
+      getPublishedOrUnpublishedProductList().then((data) => {
+        console.log(data);
+        console.log("done");
+
+        if (data.length != myOrderList.length) {
+          data.map((product) => {
+            myOrderList.push(
+              createData(
+                product.productId,
+                product.productImage.image_url,
+                product.productName,
+                product.category,
+                product.supplierName,
+                product.supplierImage.image_url,
+                product.stock,
+                product.price,
+                product.productStatus
+              )
+            );
+          });
+        }
+
+        setRows(myOrderList);
+      });
+    } else {
+      getProductByFilterStatus(activeProductListMenu).then((data) => {
+        console.log(data);
+        console.log("done");
+
+       
+        data.map((product) => {
+          myOrderList.push(
+            createData(
+              product.productId,
+              product.productImage.image_url,
+              product.productName,
+              product.category,
+              product.supplierName,
+              product.supplierImage.image_url,
+              product.stock,
+              product.price,
+              product.productStatus
+            )
+          );
+        });
+        
+
+        setRows(myOrderList);
+      
+      });
+    }
+    console.log("llll");
+  }, [ isChangeSucessfull, activeProductListMenu]);
+
+ 
 
   return (
     <div>
- <TableContainer component={Paper}>
-      <Table
-        sx={{ minWidth: 500 }}
-        size="small"
-        aria-label="custom pagination table"
-      >
-        <TableHead>
-          <TableRow>
-            <TableCell>Image</TableCell>
-            <TableCell>Product</TableCell>
-            <TableCell>Category</TableCell>
-            <TableCell>Supplier</TableCell>
-            <TableCell>Stock</TableCell>
-            <TableCell>Action</TableCell>
-          </TableRow>
-        </TableHead>
+      <TableContainer component={Paper}>
+        <Table
+          sx={{ minWidth: 500 }}
+          size="small"
+          aria-label="custom pagination table"
+        >
+          <TableHead>
+            <TableRow>
+              <TableCell>Image</TableCell>
+              <TableCell>Product</TableCell>
 
-        <TableBody>
-          {(rowsPerPage > 0
-            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            : rows
-          ).map((row) => (
-            <TableRow
-            component={Link}
-            to={`/Product/123`}
-              key={row.productId}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell>
-                <Avatar   sx={{ width: 40, height: 40 }} src={row.productImage} />
-              </TableCell>
-              <TableCell component="th" scope="row">
-                {row.productName}
-              </TableCell>
-              <TableCell>{row.category}</TableCell>
-              <TableCell>
-              <Typography
-                  component={Stack}
-                  direction="row"
-                  alignItems="center"
-                  color="black"
-                  fontSize={15}
-                >
+              <TableCell>Supplier</TableCell>
+              <TableCell>Category</TableCell>
+              <TableCell>Stock</TableCell>
+              <TableCell>Product Status</TableCell>
+              <TableCell>Price</TableCell>
+              <TableCell>Action</TableCell>
+            </TableRow>
+          </TableHead>
+
+          <TableBody>
+            {(rowsPerPage > 0
+              ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              : rows
+            ).map((row) => (
+              <TableRow
+                component={Link}
+                to={`/Product/123`}
+                key={row.productId}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell>
                   <Avatar
                     sx={{ width: 40, height: 40 }}
-                    src={row.supplierImage}
+                    src={row.productImage}
                   />
-                  {row.supplierName}
-                </Typography>
-              </TableCell>
-              <TableCell>{row.stock}</TableCell>
-              <TableCell >
-                <IconButton
-                  aria-label="edit"
-                  size="medium"
-                  onClick={(e) => {
-                    handleOnEditProduct(e,row.productId);
-                  }}
-                >
-                  <ModeEditOutlineOutlinedIcon fontSize="small" />
-                </IconButton>
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  {row.productName}
+                </TableCell>
 
-                <IconButton
-                  aria-label="delete"
-                  size="medium"
-                  onClick={(e) => {
-                    handleOnDeleteProduct(e,row.productId);
-                  }}
-                >
-                  <DeleteOutlineOutlinedIcon fontSize="small" />
-                </IconButton>
-              </TableCell>
+                <TableCell>
+                  <Typography
+                    component={Stack}
+                    direction="row"
+                    alignItems="center"
+                    color="black"
+                    fontSize={15}
+                  >
+                    <Avatar
+                      sx={{ width: 40, height: 40 }}
+                      src={row.supplierImage}
+                    />
+                    {row.supplierName}
+                  </Typography>
+                </TableCell>
+                <TableCell>{row.category}</TableCell>
+                <TableCell>{row.stock}</TableCell>
+                <TableCell>{row.productStatus}</TableCell>
+                <TableCell>{row.price}</TableCell>
+                <TableCell>
+                  <IconButton
+                    aria-label="edit"
+                    size="medium"
+                    onClick={(e) => {
+                      handleOnEditProduct(e, row.productId);
+                    }}
+                  >
+                    <ModeEditOutlineOutlinedIcon fontSize="small" />
+                  </IconButton>
+
+                  <IconButton
+                    aria-label="delete"
+                    size="medium"
+                    onClick={(e) => {
+                      handleOnDeleteProduct(e, row.productId);
+                    }}
+                  >
+                    <DeleteOutlineOutlinedIcon fontSize="small" />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 53 * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+                colSpan={4}
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                SelectProps={{
+                  inputProps: {
+                    "aria-label": "rows per page",
+                  },
+                  native: true,
+                }}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                ActionsComponent={TablePaginationActions}
+              />
             </TableRow>
-          ))}
+          </TableFooter>
+        </Table>
+      </TableContainer>
 
-          {emptyRows > 0 && (
-            <TableRow style={{ height: 53 * emptyRows }}>
-              <TableCell colSpan={6} />
-            </TableRow>
-          )}
-        </TableBody>
-        <TableFooter >
-          <TableRow >
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-              colSpan={4}
-              count={rows.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              SelectProps={{
-                inputProps: {
-                  "aria-label": "rows per page",
-                },
-                native: true,
-              }}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              ActionsComponent={TablePaginationActions}
-            />
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </TableContainer>
-
-    
-    <div>
+      <div>
         {/* product status change conformation */}
 
         <ProductStatusChangeConfirmationDialog
@@ -284,10 +487,10 @@ export default function ProductsTable() {
         />
       </div>
 
-    <div >
-      {/* dialog for deleteconfirmaton */}
+      <div>
+        {/* dialog for deleteconfirmaton */}
         <DeleteConfirmationDialogModal
-         deletionId={productToDeleteId}
+          deletionId={productToDeleteId}
           deleteConfirmationDialogOpen={deleteConfirmationDialogOpen}
           setDeleteConfirmationDialogOpen={setDeleteConfirmationDialogOpen}
           deleteConfirmed={deleteProduct}
@@ -296,6 +499,5 @@ export default function ProductsTable() {
         />
       </div>
     </div>
-   
   );
 }

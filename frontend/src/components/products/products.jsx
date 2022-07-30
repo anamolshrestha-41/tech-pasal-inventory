@@ -160,7 +160,7 @@ function Products() {
       </div>
 
       <div className="products-bar">
-        <ProductsTable />
+        <ProductsTable     activeProductListMenu={activeProductListMenu} />
       </div>
     </div>
   );

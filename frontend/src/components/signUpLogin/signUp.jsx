@@ -54,6 +54,7 @@ function SignUp() {
       resizeImageFile(file).then((image) => {
         console.log(image);
         setImagePreview(image);
+        setSignUpData({ ...signUpData, profileImage:image });
       });
     } else {
       console.log(e.target.name);

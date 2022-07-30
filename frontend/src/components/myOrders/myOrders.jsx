@@ -33,6 +33,7 @@ function MyOrders() {
   const [activeCategory, setActiveCategory] = useState(null);
   const[searchItem,setSearchItem]=useState(null);
   const [myOrderList,setMyOrderList]=useState(null);
+  const[isChangeSucessfull,setIsChangeSucessful]=useState(false);
 
   const handleSearchItem=(e)=>{
    setSearchItem(e.target.value);
@@ -49,12 +50,6 @@ function MyOrders() {
   };
 
 
-useEffect(()=>{
-getShippedOrProcessingImportOrdersList().then(data=>{
-  console.log(data);
-  setMyOrderList(data);
-})
-},[])
 
   useEffect(() => {
     document.querySelectorAll(".my-orders-list-menu").forEach((element) => {
@@ -68,9 +63,9 @@ getShippedOrProcessingImportOrdersList().then(data=>{
     });
   }, [activeOrderListMenu]);
 
-  if(!myOrderList){
-    return <div>loading</div>
-  }
+  // if(!myOrderList){
+  //   return <div>loading</div>
+  // }
 
   return (
     <div className="my-orders">
@@ -182,7 +177,9 @@ getShippedOrProcessingImportOrdersList().then(data=>{
       </div>
 
       <div className="my-orders-bar">
-        <MyOrdersTable  myOrderList={myOrderList}/>
+        <MyOrdersTable 
+        activeOrderListMenu={activeOrderListMenu}
+        />
       </div>
     </div>
   );
