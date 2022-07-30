@@ -31,6 +31,15 @@ import {
 import { Link } from "react-router-dom";
 import DeleteConfirmationDialogModal from "../deleteConfirmationDialogModal/deleteConfirmationDialogModal";
 import OrderStatusChangeConfirmationDialog from "../statusChangeConfirmation/orderStatusChangeConfirmationDialog";
+import { useEffect } from "react";
+import {
+  cancelImportOrder,
+  getImportOrderByFilterStatus,
+  getShippedOrProcessingImportOrdersList,
+  updateImportOrderStatus,
+} from "../../controllers/importOrderController";
+import { useSnackbar } from "notistack";
+import { useState } from "react";
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -107,7 +116,6 @@ function createData(
   productId,
   productImage,
   productName,
-  productVariant,
   supplierImage,
   supplierName,
   orderedDate,
@@ -122,7 +130,6 @@ function createData(
     productId,
     productImage,
     productName,
-    productVariant,
     supplierImage,
     supplierName,
     orderedDate,
@@ -133,7 +140,7 @@ function createData(
   };
 }
 
-const rows = [
+const row = [
   createData(
     1,
     10,
@@ -150,7 +157,7 @@ const rows = [
     40000
   ),
   createData(
-    2,
+    1,
     10,
     2,
     productImage,
@@ -165,37 +172,7 @@ const rows = [
     40000
   ),
   createData(
-    3,
-    10,
-    2,
-    productImage,
-    "Samsung F-22",
-    "black",
-    supplierImage,
-    "Autocad Technology pvt ltd",
-    "2022-3-55",
-    12,
-    "processing",
-    "unpaid",
-    40000
-  ),
-  createData(
-    4,
-    10,
-    2,
-    productImage,
-    "Samsung F-22",
-    "black",
-    supplierImage,
-    "Autocad Technology pvt ltd",
-    "2022-3-55",
-    12,
-    "processing",
-    "unpaid",
-    40000
-  ),
-  createData(
-    5,
+    1,
     10,
     2,
     productImage,
@@ -226,7 +203,12 @@ const rows = [
   ),
 ];
 
-export default function MyOrdersTable() {
+export default function MyOrdersTable(props) {
+  const { activeOrderListMenu } = props;
+  const { enqueueSnackbar } = useSnackbar();
+  const [rows, setRows] = React.useState([]);
+  var myOrderList = [];
+  const [isChangeSucessfull, setIsChangeSucessfull] = React.useState(false);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [myOrderToDeleteId, setMyOrderToDeleteId] = React.useState(null);
@@ -259,6 +241,23 @@ export default function MyOrdersTable() {
 
   const changeStatus = (myOrderId, myOrderStatus) => {
     console.log(myOrderId, myOrderStatus);
+    updateImportOrderStatus(myOrderId, myOrderStatus).then((data) => {
+      console.log(data);
+      if (data.sucess == true) {
+        setIsChangeSucessfull(!isChangeSucessfull);
+        setRows([]);
+
+        enqueueSnackbar(data.message, {
+          variant: "success",
+          autoHideDuration: 2000,
+        });
+      } else {
+        enqueueSnackbar(data.error, {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      }
+    });
   };
 
   const handleOnDeleteMyOrder = (e, myOrderId) => {
@@ -270,7 +269,96 @@ export default function MyOrdersTable() {
 
   const deleteMyOrder = (myOrderId) => {
     console.log("My order", myOrderId, "deleted");
+    cancelImportOrder(myOrderId).then((data) => {
+      console.log(data);
+      if (data.sucess == true) {
+        setIsChangeSucessfull(!isChangeSucessfull);
+
+        enqueueSnackbar(data.message, {
+          variant: "success",
+          autoHideDuration: 2000,
+        });
+      } else {
+        enqueueSnackbar(data.error, {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      }
+    });
   };
+
+  useEffect(() => {
+    if (activeOrderListMenu === "All Orders") {
+      getShippedOrProcessingImportOrdersList().then((data) => {
+        console.log(data);
+        console.log("done");
+
+        if (data.length != myOrderList.length) {
+          data.map((myOrder) => {
+            myOrderList.push(
+              createData(
+                myOrder.myOrderId,
+                myOrder.supplierId,
+                myOrder.productId,
+                myOrder.productImage.image_url,
+                myOrder.productName,
+                myOrder.supplierImage.image_url,
+                myOrder.supplierName,
+                myOrder.orderedDate,
+                myOrder.quantity,
+                myOrder.myOrderStatus,
+                myOrder.paymentStatus,
+                myOrder.totalPrice
+              )
+            );
+          });
+        }
+
+        setRows(myOrderList);
+      });
+    } else {
+      getImportOrderByFilterStatus(activeOrderListMenu).then((data) => {
+        console.log(data);
+        console.log("done");
+
+        if (data.length != myOrderList.length) {
+          data.map((myOrder) => {
+            myOrderList.push(
+              createData(
+                myOrder.myOrderId,
+                myOrder.supplierId,
+                myOrder.productId,
+                myOrder.productImage.image_url,
+                myOrder.productName,
+                myOrder.supplierImage.image_url,
+                myOrder.supplierName,
+                myOrder.orderedDate,
+                myOrder.quantity,
+                myOrder.myOrderStatus,
+                myOrder.paymentStatus,
+                myOrder.totalPrice
+              )
+            );
+          });
+        }
+
+        setRows(myOrderList);
+      });
+    }
+  }, [isChangeSucessfull, activeOrderListMenu]);
+
+  // if(rows.length==0){
+  //   return <div>loading</div>
+  // }
+
+  // useEffect(() => {
+  //   console.log(myOrderLists);
+  //   if(rows.length==0){
+
+  //   }
+
+  //   console.log(myOrderLists);
+  //  }, []);
 
   return (
     <div>
@@ -284,7 +372,6 @@ export default function MyOrdersTable() {
             <TableRow>
               <TableCell>Id</TableCell>
               <TableCell>Product</TableCell>
-              <TableCell>Variant</TableCell>
               <TableCell>Supplier</TableCell>
               <TableCell>Qty</TableCell>
               <TableCell>Ordered Date</TableCell>
@@ -304,7 +391,7 @@ export default function MyOrdersTable() {
                 key={row.myOrderId}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 component={Link}
-                to={`/MyOrder/123`}
+                to={`/MyOrder/${row.myOrderId}`}
               >
                 <TableCell sx={{ width: 5 }}>{row.myOrderId}</TableCell>
                 <TableCell>
@@ -322,7 +409,6 @@ export default function MyOrdersTable() {
                     {row.productName}
                   </Typography>
                 </TableCell>
-                <TableCell>{row.productVariant}</TableCell>
                 <TableCell>
                   <Typography
                     component={Stack}
@@ -342,7 +428,7 @@ export default function MyOrdersTable() {
                 <TableCell>{row.orderedDate}</TableCell>
                 <TableCell>{row.status}</TableCell>
                 <TableCell>{row.payment}</TableCell>
-                <TableCell>{row.total}</TableCell>
+                <TableCell>{parseInt(row.total)}</TableCell>
                 <TableCell>
                   <Typography
                     component={Stack}

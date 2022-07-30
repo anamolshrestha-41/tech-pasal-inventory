@@ -18,9 +18,17 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { getProductFullDetailsForStoreOrder } from "../../controllers/storeController";
+import { createNewCustomerOrder } from "../../controllers/customerOrderController";
+import { useSnackbar } from 'notistack';
+
 
 function StoreProductDetails() {
+  const { enqueueSnackbar} = useSnackbar();
+  const { productId } = useParams();
+  const[productDetails,setProductDetails]=useState(null);
+
   const [importQuantity, setImportQuantity] = useState(1);
 
   const handleUpdateImportQuantity = (e, update) => {
@@ -35,38 +43,64 @@ function StoreProductDetails() {
     console.log(importQuantity);
   };
 
+  const placeCustomerOrderSubmit=()=>{
+    createNewCustomerOrder({productId:productId,quantity:importQuantity}).then(data=>{
+      console.log(data);
+      if (data.sucess==true) {
+        enqueueSnackbar("order placed sucessfully",{variant:"success",autoHideDuration:2000});
+       setImportQuantity(1);
+      }else{
+        enqueueSnackbar(data.error,{variant:"error",autoHideDuration:2000});
+      }
+    })
+  }
+
+  useEffect(()=>{
+getProductFullDetailsForStoreOrder(productId).then(data=>{
+  console.log(data);
+  setProductDetails(data[0]);
+})
+  },[])
+
+  if(!productDetails){
+    return <div>loading</div>
+  }
+  const{name,brand,category,price,stock,productImage,productDescription,vat}=productDetails;
+
+
+
   return (
     <div className="store-product-details">
       <div className="product-information-bar">
         <div className="product-information">
           <div className="product-description">
             <div className="product-full-details">
-              <h3>Samsung F22</h3>
+              <h3>{name}</h3>
 
               <div>
-                Brand:<p>Samsung</p>
+                Brand:<p>{brand}</p>
               </div>
               <div>
-                Category:<p>mobile</p>
+                Category:<p>{category}</p>
               </div>
+            
+
               <div>
-                Variant:<p>black</p>
+                Price:<p>Nrs.{price}</p>
               </div>
 
               <div>
-                Price:<p>100000</p>
-              </div>
-
-              <div>
-                Stock:<p>In Stock</p>
+                Stock:<p>{stock}</p>
               </div>
 
               <div className="product-description-material">
                 <h6> Description:</h6>
+                <div style={{fontSize:"18px",fontWeight:200,color:"gray",display:"flex",width:"100%"}}>    {productDescription}</div>
+            
 
-                <ul>
+                {/* <ul>
                   <li>
-                    Weight:<p>2kg</p>
+                    Weight:<p>2k</p>
                   </li>
                   <li>
                     Screen:<p>90hz</p>
@@ -78,13 +112,13 @@ function StoreProductDetails() {
                     Camera:
                     <p>48Mp Main Camera,2MP Micro,2MP Macro,8MP front camera</p>
                   </li>
-                </ul>
+                </ul> */}
                 <div></div>
               </div>
             </div>
             <div className="product-image">
               <div>
-                <img src={productImage} alt="productImage" />
+                <img src={productImage.image_url} alt="productImage" />
               </div>
             </div>
           </div>
@@ -148,15 +182,15 @@ function StoreProductDetails() {
               Quantity:<p>{importQuantity}</p>
             </div>
             <div>
-              Price:<p>NRs.100000</p>
+              Price:<p>Nrs.{price}</p>
             </div>
             <div>
-              VAT:<p>100000</p>
+              VAT:<p>{vat}%</p>
             </div>
 
             <div style={{ color: "green", fontWeight: "bold" }}>
               Total Cost:
-              <p style={{ color: "green", fontWeight: "bold" }}>NRs.5000000</p>
+              <p style={{ color: "green", fontWeight: "bold" }}>NRs.{(price*importQuantity*(1+vat/100)).toFixed(0)}</p>
             </div>
           </div>
           <Button
@@ -167,6 +201,7 @@ function StoreProductDetails() {
               width: "200px",
               margin: "10px",
             }}
+            onClick={placeCustomerOrderSubmit}
           >
             Import
           </Button>

@@ -13,16 +13,30 @@ import SignUp from "./components/signUpLogin/signUp";
 import { UserContext } from "./userContext";
 import NotificationBar from "./components/notificationbar/notificationBar";
 import { Store } from "@mui/icons-material";
+import { getAllActiveCategory } from "./controllers/categoryController";
+import { getAllActiveSuppliers } from "./controllers/supplierController";
 
 function App() {
   const[isAdmin,setIsAdmin]=useState(true);
   const location = useLocation();
+  const[categoryList,setCategoryList]=useState(null);
+  const[supplierList,setSupplierList]=useState(null);
   useEffect(() => {
     console.log(location.pathname);
+    getAllActiveCategory().then((data=>{
+      console.log(data);
+      setCategoryList(data);
+    }))
+
+    getAllActiveSuppliers().then(data=>{
+      console.log(data);
+      setSupplierList(data);
+    })
+
   }, []);
   return (
  
-      <UserContext.Provider value={{adminControl:{isAdmin,setIsAdmin}}}>
+      <UserContext.Provider value={{adminControl:{isAdmin,setIsAdmin},categoryList:categoryList,supplierList:supplierList}}>
         <div className="app">
       <Routes>
         <Route exact path="/" element={<Login />}></Route>

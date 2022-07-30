@@ -10,6 +10,7 @@ import { color } from "@mui/system";
 import NewSupplierForm from "../newSupplierForm/newSupplierForm";
 import { useEffect } from "react";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import { getSupplierLists } from "../../controllers/supplierController";
 
 
 const categoryList = [
@@ -24,6 +25,7 @@ function Suppliers() {
   const [isSupplierFormActive, setSupplierFormActive] = useState(false);
   const [searchItem, setSearchItem] = useState('');
   const [activeCategory,setActiveCategory]=useState(null);
+  const[suppliers,setSuppliers]=useState(null);
 
   const handleCategoryChange=(e)=>{
     setActiveCategory(e.target.value);
@@ -41,25 +43,51 @@ function Suppliers() {
     setSearchItem(e.target.value);
   };
 
+
+  useEffect(()=>{
+getSupplierLists().then(data=>{
+  console.log(data);
+  setSuppliers(data);
+})
+  },[])
+
+  if(!suppliers){
+    return <div>loading</div>
+  }
+
   return (
     <div className="suppliers">
       {!isSupplierFormActive && (
         <div className="suppliers-bar">
-          <div className="supplier">
+
+          {
+            suppliers.map(supplier=>{
+              return  <div className="supplier">
+              <SupplierList 
+              supplierImage={supplier.supplierImage}
+            name={supplier.name}
+            email={supplier.email}
+            country={supplier.country}
+            supplierId={supplier.supplierId}
+            state={supplier.state}
+            city={supplier.city}
+            street={supplier.street}
+            pinCode={supplier.pinCode}
+            poBox={supplier.poBox}
+            supplierDetails={supplier.supplierDetails}
+            contactNo={supplier.contactNo}
+              />
+            </div>
+            })
+          }
+         
+          {/* <div className="supplier">
             <SupplierList />
           </div>
+          
           <div className="supplier">
             <SupplierList />
-          </div>
-          <div className="supplier">
-            <SupplierList />
-          </div>
-          <div className="supplier">
-            <SupplierList />
-          </div>
-          <div className="supplier">
-            <SupplierList />
-          </div>
+          </div> */}
         </div>
       )}
 

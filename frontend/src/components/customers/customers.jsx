@@ -28,6 +28,7 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { useRef } from "react";
 import { useEffect } from "react";
 import DeleteConfirmationDialogModal from "../deleteConfirmationDialogModal/deleteConfirmationDialogModal";
+import { getCustomerLists } from "../../controllers/customerController";
 
 const customerFilter = ["location", "name"];
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
@@ -35,6 +36,8 @@ function Customers() {
   const [searchItem, setSearchItem] = useState("");
   const [activeCategory, setActiveCategory] = useState(null);
   const [selectedCustomerId, setSelectedCustomerId] = useState(null);
+  const[customers,setCustomers]=useState(null);
+  const[selectedCustomer,setSelectedCustomer]=useState(null);
 
 
   const [deleteConfirmationDialogOpen, setDeleteConfirmationDialogOpen] =
@@ -67,48 +70,81 @@ const deleteCustomer=(customerId)=>{
     setSearchItem(e.target.value);
   };
 
+  useEffect(()=>{
+    if(customers){
+      customers.map(customer=>{
+      
+        if(customer.customerId==selectedCustomerId){
+          setSelectedCustomer({
+            email:customer.email,
+            image:customer.profileImage
+
+          });
+          console.log(customer);
+        }
+        
+       });
+    }
+
+  },[selectedCustomerId])
+
   useEffect(() => {
     console.log(selectedCustomerId);
-  }, [selectedCustomerId]);
+
+    getCustomerLists().then(data=>{
+      console.log(data);
+      setCustomers(data);
+    })
+  }, []);
+
+  if(!customers){
+    return <div>loading</div>
+  }
 
   return (
     <div className="customers">
       <div className="customers-bar">
-        <div
-          className="customer-bar-item"
-          customerId={1}
-          onClick={handleCustomerClick}
-        >
-          {selectedCustomerId == 1 ? (
-            <Checkbox
-              {...label}
-              checked
-              color="success"
-              sx={{ position: "absolute", left: 0 }}
-            />
-          ) : (
-            ""
-          )}
 
-          <CustomerList />
-        </div>
-        <div
-          className="customer-bar-item"
-          customerId={2}
-          onClick={handleCustomerClick}
-        >
-          {selectedCustomerId == 2 ? (
-            <Checkbox
-              {...label}
-              checked
-              color="success"
-              sx={{ position: "absolute", left: 0 }}
-            />
-          ) : (
-            ""
-          )}
-          <CustomerList />
-        </div>
+{
+  customers.map(customer=>{
+    return <div
+    className="customer-bar-item"
+    customerId={customer.customerId}
+    onClick={handleCustomerClick}
+  >
+    {selectedCustomerId == customer.customerId? (
+      <Checkbox
+        {...label}
+        checked
+        color="success"
+        sx={{ position: "absolute", left: 0 }}
+      />
+    ) : (
+      ""
+    )}
+
+    <CustomerList
+    profileImage={customer.profileImage}
+    name={customer.name}
+    email={customer.email}
+    contactNo={customer.contactNo}
+    state={customer.state}
+    city={customer.city}
+    street={customer.street}
+    customerType={customer.customerType}
+    
+    />
+  </div>
+  })
+}
+        
+
+
+{/* 
+
+
+
+       
         <div
           className="customer-bar-item"
           customerId={3}
@@ -126,6 +162,7 @@ const deleteCustomer=(customerId)=>{
           )}
           <CustomerList />
         </div>
+
         <div
           className="customer-bar-item"
           customerId={4}
@@ -142,7 +179,11 @@ const deleteCustomer=(customerId)=>{
             ""
           )}
           <CustomerList />
-        </div>
+        </div> */}
+
+
+
+
       </div>
       <div className="customer-manage-bar">
         <div className="customer-manage-top-bar">
@@ -197,16 +238,16 @@ const deleteCustomer=(customerId)=>{
             Manage Account
           </h3>
           {
-            selectedCustomerId &&
+            selectedCustomerId &&selectedCustomer &&
             <div className="selected-customer-info">
             {" "}
             <div>
               <Avatar
-                src={customerImage}
+                src={selectedCustomer.image.image_url}
                 sx={{ height: 60, width: 60 }}
               ></Avatar>
             </div>
-            <h5>jagadish.sta@gmail.com</h5>
+            <h5>{selectedCustomer.email}</h5>
           </div>
           }
           {
@@ -219,7 +260,7 @@ const deleteCustomer=(customerId)=>{
             Delete
           </Button>
           {
-            selectedCustomerId &&  <Link to ={`/Customer/123`} style={{color:"blue"}}>View customer  details</Link>
+            selectedCustomerId &&  <Link to ={`/Customer/${selectedCustomerId}`} style={{color:"blue"}}>View customer  details</Link>
           }
          
         </div>

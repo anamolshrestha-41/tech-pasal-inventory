@@ -92,8 +92,11 @@ margin: 0px;
 min-width:300px;
 display:flex;
 flex-direction: column;
-height: 200px;
+/* height: 200px; */
 overflow: hidden;
+/* 
+background-color: red; */
+align-self: center;
 
 
 

@@ -4,40 +4,40 @@ import './supplierList.css';
 import supplierLogo from './supplierLogo.png';
 
 import {Link} from 'react-router-dom';
+import { getSupplierNameAndImage } from '../../controllers/supplierController';
 
-function SupplierList() {
-   
+function SupplierList(props) {
+   const {name,email,country,supplierId,state,city,street,pinCode,poBox,supplierDetails,supplierImage,contactNo}=props;
     return ( <div className="supplier-list">
       <div className="supplier-logo">
-        <img src={supplierLogo} alt="supplier image" />
+        <img src={supplierImage.image_url} alt="supplier image" />
       </div>
       <div className="supplier-description">
-        <div className="supplier-name">AutoCad technology pvt .ltd 
+        <div className="supplier-name">{name}
         <div>
-          <Link to={`/Supplier/123`} style={{fontSize:"14px",color:"blue"}}>View Details</Link>
+          <Link to={`/Supplier/${supplierId}`} style={{fontSize:"14px",color:"blue"}}>View Details</Link>
         </div>
         </div>
-        <div className="supplier-country">India</div>
-        <div className="supplier-email">autocad@gmail.com</div>
+        <div className="supplier-country">{country}</div>
+        <div className="supplier-email">{email}</div>
         <div className="supplier-address">
-   <p>uttaranchal , New Delhi, solte street</p>
+   <p>{state} ,{city}, {street} </p>
            
            
         </div>
         <div className="supplier-contact-number">
           <span>Contact No:</span>
           
-          9869194591
+         {contactNo}
         </div>
         <div className="supplier-pinCode">
-              <span>Pin Code: 44600</span>
+              <span>Pin Code: {pinCode}</span>
               {" "}
-              <span>P.O Box: 458215</span>
+              <span>P.O Box: {poBox}</span>
             </div>
 
         <div className="supplier-details">
-            we have been electronics goods including webcam ,drone, processor
-            since 2000.We have branches in 25 countries across Asia
+           {supplierDetails}
         </div>
       </div>
     </div> );

@@ -5,9 +5,21 @@ import supplierImage from "../../demo/supplierLogo.png";
 import { Avatar, Button, ButtonGroup, Divider, TextField } from "@mui/material";
 import { useState } from "react";
 import { useEffect } from "react";
+import { getSupplierNameAndImage } from "../../controllers/supplierController";
 
-function ProductList({ isSelected,changeSelectedProductImportQuantity}) {
+function ProductList(props) {
+
+  const {isSelected,changeSelectedProductImportQuantity,
+  name,
+  brand,
+  price,
+  supplierId,
+  productDescription,
+  image
+
+  }=props;
   const [importQuantity, setImportQuantity] = useState(1);
+  const [supplier,setSupplier]=useState(null);
 
   const handleUpdateImportQuantity = (e, update) => {
     e.stopPropagation();
@@ -24,67 +36,45 @@ function ProductList({ isSelected,changeSelectedProductImportQuantity}) {
    
   };
   useEffect(()=>{
-    
+    getSupplierNameAndImage(supplierId).then(data=>{
+      console.log(data);
+      setSupplier(data[0]);
+    })
 setImportQuantity(1);
   },[isSelected])
+
+  if(!supplier){
+    return <div>loadig</div>
+  }
 
   return (
     <div className="product-list">
       <div className="product-list-image">
-        <img src={productImage} alt="" />
+        <img src={image} alt="" />
       </div>
       <Divider orientation="vertical" variant="middle" flexItem />
 
       <div className="product-list-description">
-        <h3>Samsung F22</h3>
+        <h3>{name}</h3>
         <div className="product-list-brand">
-          Brand :<p>samsumg</p>
+          Brand :<p>{brand}</p>
         </div>
         <div className="product-supplier-list">
       
-          <Avatar src={supplierImage}/>
-          <p>    AutoCad Technology Pvt. Ltd</p>
+          <Avatar src={ supplier.supplierImage.image_url}/>
+          <p> {supplier.name}</p>
       
         </div>
 
         <div className="product-list-price">
           Rs.
-          <p>100000</p>
+          <p>{price}</p>
         </div>
       </div>
       <Divider orientation="vertical" variant="middle" flexItem />
       <div className="product-details-import">
-        <div>
-          {" "}
-          Weight:<p>0.75kg</p>
-        </div>
-        <div>
-          {" "}
-          Screen:<p>14inch</p>
-        </div>
-        <div>
-          {" "}
-          Display:<p>720p</p>
-        </div>
-        <div>
-          Camera:<p>48MP main camera,2MP micro,2MP macro,8MP front cammera</p>
-        </div>
-        <div>
-          {" "}
-          Processor:<p>helio G80 </p>
-        </div>
-        <div>
-          {" "}
-          Charging:<p>35W (fast charging) </p>
-        </div>
-        <div>
-          {" "}
-          Security:<p>fingerprint,face lock </p>
-        </div>
-        <div>
-          {" "}
-          Screen refresh rate:<p>90hz </p>
-        </div>
+        
+       {productDescription}
       </div>
       <Divider orientation="vertical" variant="middle" flexItem />
       <div className="product-quantity-import">

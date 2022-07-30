@@ -3,3 +3,24 @@
     /* background-color: red; */
 
 }
+
+
+
+#supplier-image{
+
+    margin: auto;
+    }
+    #producsupplier>img{
+      
+    width: 250px;
+    height: 250px;
+      object-fit: cover;
+    }
+    
+    #supplier-register-image> input::file-selector-button{
+      background-color: rgb(150, 235, 150);
+      cursor: pointer;
+      border-radius: 5px;
+      border: 1px solid black;
+     
+    }
