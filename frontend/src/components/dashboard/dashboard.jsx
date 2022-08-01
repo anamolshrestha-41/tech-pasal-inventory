@@ -169,7 +169,7 @@ getTopImports().then(data=>{
 
     },[])
 
-    if(!salesRows){
+    if(!salesRows || !importRows){
       return <div>loading</div>
     }
 

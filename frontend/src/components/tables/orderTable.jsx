@@ -356,10 +356,10 @@ export default function OrdersTable(props) {
               : rows
             ).map((row) => (
               <TableRow
-                key={row.productId}
+                key={row.orderId}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 component={Link}
-                to={`/order/123`}
+                to={`/order/${row.orderId}`}
               >
                 <TableCell sx={{ width: 5 }}>{row.orderId}</TableCell>
 

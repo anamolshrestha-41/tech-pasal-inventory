@@ -147,3 +147,46 @@ export const getTopSales = () => {
       return err.response.data;
     });
 };
+
+
+
+export const getCustomerOrderCompleteDetails= (orderId) => {
+  return axios
+    .get(`${process.env.REACT_APP_API_URI}/customerorder/details/${orderId}`)
+    .then((response) => {
+      console.log(response);
+      return response.data.data;
+    })
+    .catch((err) => {
+      console.log(err.response.data);
+      return err.response.data;
+    });
+};
+
+
+
+
+export const updateCustomerOrderDetails = (orderId, newOrderData) => {
+  const token = getTokenFromLocalStorage();
+  console.log(token);
+  return axios
+    .put(
+      `${process.env.REACT_APP_API_URI}/update/customerorder/${orderId}`,
+      newOrderData,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+          contentType: "application/json",
+        },
+        withCredentials: true,
+      }
+    )
+    .then((response) => {
+      console.log(response);
+      return response.data;
+    })
+    .catch((err) => {
+      console.log(err.response.data);
+      return err.response.data;
+    });
+};
