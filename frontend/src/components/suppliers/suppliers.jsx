@@ -51,7 +51,7 @@ getSupplierLists().then(data=>{
 })
   },[])
 
-  if(!suppliers){
+  if(!suppliers || suppliers.length==0){
     return <div>loading</div>
   }
 

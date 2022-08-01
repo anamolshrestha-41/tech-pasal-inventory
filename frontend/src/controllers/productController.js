@@ -127,3 +127,16 @@ export const createNewProduct=(productData)=>{
               return err.response.data;
             });
           }
+
+
+          
+  export const getProductTotalcount=()=>{
+
+    return  axios.get(`${process.env.REACT_APP_API_URI}/products/count`).then(response=>{
+      console.log(response);
+     return response.data.data;
+  }).catch(err=>{
+      console.log(err.response.data);
+      return err.response.data;
+  })
+  }

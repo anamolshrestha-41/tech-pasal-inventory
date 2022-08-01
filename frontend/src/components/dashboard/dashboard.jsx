@@ -1,5 +1,5 @@
 import "./dashboard.css";
-
+import React, { useState } from 'react';
 import { Link } from "react-router-dom";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -8,6 +8,13 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { useEffect } from "react";
+import { getProductTotalcount } from "../../controllers/productController";
+import { getImportTotalcount, getTopImports } from "../../controllers/importOrderController";
+import { getCustomerTotalcount } from "../../controllers/customerController";
+import { getCustomerOrderTotalcount, getTopSales, getTotalRevenue } from "../../controllers/customerOrderController";
+import { Avatar, Stack, Typography } from "@mui/material";
+import { convertSqlDateToJSDate } from "../../controllers/authController";
 
 function createImportData(
   myOrderId,
@@ -55,7 +62,7 @@ function createSalesData(
     };
   }
 
-const importRows = [
+const importRow = [
   createImportData(
     1,
     "gaming console",
@@ -98,7 +105,7 @@ const importRows = [
   ),
 ];
 
-const salesRows=[
+const salesRow=[
     createSalesData(1,"laptopxp","jagadish","jagadish.sta@gmail.com","2022-06-30",20,"processing","unpaid",500000),
     createSalesData(2,"mobile 54","henty","jafkndfclh.sta@gmail.com","2022-06-30",200,"shipping","unpaid",455120),
     createSalesData(3,"gaming console","dragon","javlmldflh.sta@gmail.com","2022-06-30",45,"deliveted","unpaid",5645000),
@@ -107,26 +114,94 @@ const salesRows=[
     
 ]
 
+
+
 function Dashboard() {
+  const[productCount,setProductCount]=useState(null);
+  const[salesCount,setSalesCount]=useState(null);
+  const[importCount,setImportCount]=useState(null);
+  const[customerCount,setCustomerCount]=useState(null);
+  const[revenue,setRevenue]=useState(null);
+  const[salesRows,setSalesRows]=useState(null);
+  const[importRows,setImportRows]=useState(null);
+
+  React.useEffect(()=>{
+    getProductTotalcount().then(data=>{
+      console.log(data)
+      setProductCount(data[0].productCount);
+    });
+
+    getImportTotalcount().then(data=>{
+      console.log(data);
+      setImportCount(data[0].importCount);
+    });
+
+    getCustomerTotalcount().then(data=>{
+      console.log(data);
+      setCustomerCount(data[0].customerCount);
+    });
+
+    getCustomerOrderTotalcount().then(data=>{
+      console.log(data);
+      setSalesCount(data[0].salesCount);
+    })
+
+ 
+    getTotalRevenue().then(data=>{
+      console.log(data);
+      setRevenue(data[0].revenue)
+      
+    });
+
+    
+    },[])
+
+    useEffect(()=>{
+getTopSales().then(data=>{
+  console.log(data);
+  setSalesRows(data);
+});
+
+getTopImports().then(data=>{
+  console.log(data);
+  setImportRows(data);
+})
+
+    },[])
+
+    if(!salesRows){
+      return <div>loading</div>
+    }
+
+    // if(!!salesRow || !importRows){
+    //   return <div>loading</div>
+    // }
+
+    console.log(importRows,"mmmmmmmmmmmm");
+
   return (
     <div className="dashboard">
       <h3>Overview dashboard</h3>
       <div className="dashboard-details">
         <div>
           <p>Total Revenue</p>
-          <p>10000</p>
+          <p>{revenue}</p>
         </div>
         <div>
           <p>Total Imports </p>
-          <p>5000000</p>
+          <p>{importCount}</p>
+        </div>
+        <div>
+          <p>Total Products</p>
+          <p>{productCount}</p>
         </div>
         <div>
           <p>Total Sales</p>
-          <p>90000</p>
+          <p>{salesCount}</p>
         </div>
         <div>
           <p>Total Customers</p>
-          <p>900</p>
+          <p>{customerCount}</p>
         </div>
       </div>
 
@@ -136,20 +211,19 @@ function Dashboard() {
           <p>
        
             {" "}
-            <Link to={`/Analytics/imports`} className="view-details">View All</Link>
+            <Link to={`/Analytics`} className="view-details">View All</Link>
           </p>
         </h3>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} size="small" aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Order Id</TableCell>
-                <TableCell>Name</TableCell>
+                <TableCell>Id</TableCell>
+                <TableCell>Product</TableCell>
                 <TableCell>Order Date</TableCell>
-                <TableCell>Expected Delivery Date</TableCell>
+                <TableCell>Ordered Date</TableCell>
                 <TableCell>Quantity</TableCell>
                 <TableCell>Status</TableCell>
-                <TableCell>Payment</TableCell>
                 <TableCell>Total</TableCell>
               </TableRow>
             </TableHead>
@@ -160,15 +234,44 @@ function Dashboard() {
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell>{row.myOrderId}</TableCell>
-                  <TableCell component="th" scope="row">
-                    {row.name}
-                  </TableCell>
-                  <TableCell>{row.orderedDate}</TableCell>
-                  <TableCell>{row.expectedArrivalDate}</TableCell>
-                  <TableCell>{row.qty}</TableCell>
-                  <TableCell>{row.status}</TableCell>
-                  <TableCell>{row.payment}</TableCell>
-                  <TableCell>{row.total}</TableCell>
+                  <TableCell>
+                    
+                    <Typography
+                      component={Stack}
+                      direction="row"
+                      alignItems="center"
+                      color="black"
+                      fontSize={15}
+                    >
+                      <Avatar
+                        sx={{ width: 30, height: 30 }}
+                        src={row.productImage.image_url}
+                      />
+                      {row.productName}
+                    </Typography>
+                      </TableCell>
+                      <TableCell>
+                    
+                    <Typography
+                      component={Stack}
+                      direction="row"
+                      alignItems="center"
+                      color="black"
+                      fontSize={15}
+                    >
+                      <Avatar
+                        sx={{ width: 30, height: 30 }}
+                        src={row.supplierImage.image_url}
+                      />
+                      {row.supplierName}
+                    </Typography>
+                      </TableCell>
+                  <TableCell>{row.orderedDate.slice(0,10)}</TableCell>
+                 
+                  <TableCell>{row.quantity}</TableCell>
+                  <TableCell>{row.myOrderStatus}</TableCell>
+                 
+                  <TableCell>{parseInt(row.totalPrice)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -182,21 +285,20 @@ function Dashboard() {
           <p>
        
             {" "}
-            <Link to={`/Analytics/sales`} className="view-details">View All</Link>
+            <Link to={`/Analytics`} className="view-details">View All</Link>
           </p>
         </h3>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} size="small" aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Order Id</TableCell>
+                <TableCell>Id</TableCell>
                 <TableCell>Product</TableCell>
-                <TableCell>Customer Name</TableCell>
-                <TableCell>Email</TableCell>
+                <TableCell>Customer</TableCell>
+                <TableCell>Customer Email</TableCell>
                 <TableCell>Order Date</TableCell>
                 <TableCell>Quantity</TableCell>
                 <TableCell>Status</TableCell>
-                <TableCell>Payment</TableCell>
                 <TableCell>Total</TableCell>
               </TableRow>
             </TableHead>
@@ -206,17 +308,45 @@ function Dashboard() {
                   key={row.orderId}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell>{row.OrderId}</TableCell>
-                  <TableCell>{row.product}</TableCell>
-                  <TableCell component="th" scope="row">
+                  <TableCell>{row.orderId}</TableCell>
+                  <TableCell>
+                    
+                  <Typography
+                    component={Stack}
+                    direction="row"
+                    alignItems="center"
+                    color="black"
+                    fontSize={15}
+                  >
+                    <Avatar
+                      sx={{ width: 30, height: 30 }}
+                      src={row.productImage.image_url}
+                    />
+                    {row.productName}
+                  </Typography>
+                    </TableCell>
+                    <TableCell>
+                    
+                  <Typography
+                    component={Stack}
+                    direction="row"
+                    alignItems="center"
+                    color="black"
+                    fontSize={15}
+                  >
+                    <Avatar
+                      sx={{ width: 30, height: 30 }}
+                      src={row.customerImage.image_url}
+                    />
                     {row.customerName}
-                  </TableCell>
+                  </Typography>
+                    </TableCell>
                   <TableCell>{row.customerEmail}</TableCell>
-                  <TableCell>{row.orderedDate}</TableCell>
-                  <TableCell>{row.qty}</TableCell>
-                  <TableCell>{row.status}</TableCell>
-                  <TableCell>{row.payment}</TableCell>
-                  <TableCell>{row.total}</TableCell>
+                  <TableCell>{ row.orderedDate.slice(0,10)}</TableCell>
+                  <TableCell>{row.quantity}</TableCell>
+                  <TableCell>{row.orderStatus}</TableCell>
+                 
+                  <TableCell>{parseInt(row.totalPrice)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

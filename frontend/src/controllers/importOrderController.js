@@ -30,7 +30,7 @@ console.log(token);
 
   export const getShippedOrProcessingImportOrdersList=()=>{
 
-    return  axios.get(`${process.env.REACT_APP_API_URI}/shippedordeliveredimportorderlist`).then(response=>{
+    return  axios.get(`${process.env.REACT_APP_API_URI}/shippedorprocessingimportorderlist`).then(response=>{
       console.log(response);
      return response.data.data;
   }).catch(err=>{
@@ -105,3 +105,42 @@ console.log(token);
               return err.response.data;
             });
           }
+
+
+                    
+  export const getImportTotalcount=()=>{
+
+    return  axios.get(`${process.env.REACT_APP_API_URI}/imports/count`).then(response=>{
+      console.log(response);
+     return response.data.data;
+  }).catch(err=>{
+      console.log(err.response.data);
+      return err.response.data;
+  })
+  }
+
+
+
+  export const getTopImports=()=>{
+
+    return  axios.get(`${process.env.REACT_APP_API_URI}/topimports`).then(response=>{
+      console.log(response);
+     return response.data.data;
+  }).catch(err=>{
+      console.log(err.response.data);
+      return err.response.data;
+  })
+  }
+
+
+
+  export const getCompleteImportOrderDetails=(myOrderId)=>{
+
+    return  axios.get(`${process.env.REACT_APP_API_URI}/myorder/details/${myOrderId}`).then(response=>{
+      console.log(response);
+     return response.data.data;
+  }).catch(err=>{
+      console.log(err.response.data);
+      return err.response.data;
+  })
+  }

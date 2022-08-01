@@ -11,12 +11,15 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import SettingsIcon from "@mui/icons-material/Settings";
 import CustomerOrderTable from "../tables/customerOrderTable";
 import { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link ,useParams} from 'react-router-dom';
 import UpdateOrderFormDialog from '../updateForms/updateOrderFormDialog';
 import DeleteConfirmationDialogModal from '../deleteConfirmationDialogModal/deleteConfirmationDialogModal';
 import UpdateMyOrderFormDialog from '../updateForms/updateMyOrderFormDialog';
+import { getCompleteImportOrderDetails } from '../../controllers/importOrderController';
 
 function MyOrderDetails() {
+  const{myOrderId}=useParams();
+  const[myOrderData,setMyOrderData]=useState(null);
   const [myOrderToDeleteId, setMyOrderToDeleteId] = useState(null);
   const [myOrderToChangeId,setMyOrderToChangeId] = useState(null);
   const [deleteConfirmationDialogOpen, setDeleteConfirmationDialogOpen] =
@@ -42,61 +45,62 @@ const handleOnDeleteMyOrder = () => {
 };
 
 
+useEffect(()=>{
+getCompleteImportOrderDetails(myOrderId).then(data=>{
+  console.log(data);
+  setMyOrderData(data[0]);
+})
+},[])
+
+if(!myOrderData){
+  return <div>loading</div>
+}
+
     return (  <div className="my-order-details">
     <div className="my-order-information-bar">
       <div className="my-order-information">
         <div className="my-order-description">
           <div className="my-order-full-details">
-            <h3>#123</h3>
+            <h3>#{myOrderData.myOrderId}</h3>
             <div>
-             Samsung F22
+            {myOrderData.productName}
             </div>
             <div>
-              Brand:<p>Samsung</p>
+              Brand:<p>{myOrderData.productBrand}</p>
             </div>
             <div>
-              Category:<p>mobile</p>
-            </div>
-            <div>
-              Variant:<p>black</p>
+              Category:<p>{myOrderData.productCategory}</p>
             </div>
            
+           
             <div>
-              @Price:<p>100000</p>
+              @Price:<p>{myOrderData.eachPrice}</p>
             </div>
             
             <div>
-              @Custom Duty:<p>14%</p>
+              @Custom Duty:<p>{myOrderData.customDuty}</p>
             </div>
             <div>
-              Quantity:<p>5</p>
+              Quantity:<p>{myOrderData.quantity}</p>
             </div>
-            <div>
-              Transportation Cost:<p>NRs.5000</p>
-            </div>
+          
             
             <div style={{color:"green",fontWeight:"bold"}}>
-              Total Cost Price:<p style={{color:"green",fontWeight:"bold"}}>NRS.550000</p>
+              Total Cost Price:<p style={{color:"green",fontWeight:"bold"}}>NRs.{myOrderData.priceEach*myOrderData.quantity*(1+myOrderData.customDuty/100)}</p>
             </div>
             <div>
-              Order Date:<p>2078-4-30</p>
+              Order Date:<p>{myOrderData.orderedDate.slice(1,10)}</p>
             </div>
             <div>
-              Order Status:<p>processing</p>
+              Order Status:<p>{myOrderData.myOrderStatus}</p>
             </div>
             <div>
-              Expected Delivery Date:<p>2078-6-30</p>
-            </div>
-            <div>
-              Payment:<p>unpaid</p>
-            </div>
-            <div>
-              Payment Mode:<p>Cash on Delivery</p>
+              Expected Delivery Date:<p>{myOrderData.expectedDeliveryDate.slice(0,10)}</p>
             </div>
           </div>
           <div className="product-image">
             <div>
-            <img src={productImage} alt="productImage" />
+            <img src={myOrderData.productImage.image_url} alt="productImage" />
             </div>
             
          
@@ -108,9 +112,9 @@ const handleOnDeleteMyOrder = () => {
       <div className="my-order-shipping-info">
 
         <div className="supplier-profile-view">
-            <Avatar sx={{width:150,height:150}} src={supplierImage}/>
-            <h4>Autocad Technology Pvt. Ltd</h4>
-            <h5>autocadtech@gmail.com</h5>
+            <Avatar sx={{width:150,height:150}} src={myOrderData.supplierImage.image}/>
+            <h4>{myOrderData.supplierName}</h4>
+            <h5>{myOrderData.supplierEmail}</h5>
             <Link to={`/Supplier/123`} style={{color:"blue"}}>View supplier details</Link>
         </div>
         <Divider variant="middle" />
