@@ -23,6 +23,8 @@ import FirstPageIcon from "@mui/icons-material/FirstPage";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
+import { useSnackbar } from "notistack";
+
 import {
   Avatar,
   Button,
@@ -32,6 +34,16 @@ import {
 } from "@mui/material";
 import DeleteConfirmationDialogModal from "../deleteConfirmationDialogModal/deleteConfirmationDialogModal";
 import OrderStatusChangeConfirmationDialog from "../statusChangeConfirmation/orderStatusChangeConfirmationDialog";
+
+
+import {
+ 
+  updateCustomerOrderStatus,
+  cancelCustomerOrder,
+  getCustomerOrderByFilterStatus,
+  getShippedOrProcessingCustomerOrdersList
+} from "../../controllers/customerOrderController";
+
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -108,33 +120,31 @@ function createData(
   productId,
   productImage,
   productName,
-  productVariant,
   customerImage,
   customerName,
-  deliveryAddress,
   quantity,
-  status,
-  payment,
+  shippingAddress,
+  orderStatus,
+  paymentStatus,
   total
 ) {
   return {
     orderId,
-    customerId,
-    productId,
-    productImage,
-    productName,
-    productVariant,
-    customerImage,
-    customerName,
-    deliveryAddress,
-    quantity,
-    status,
-    payment,
-    total,
+  customerId,
+  productId,
+  productImage,
+  productName,
+  customerImage,
+  customerName,
+  quantity,
+  shippingAddress,
+  orderStatus,
+  paymentStatus,
+  total
   };
 }
 
-const rows = [
+const row = [
   createData(
     1,
     1,
@@ -150,66 +160,7 @@ const rows = [
     "unpaid",
     40000
   ),
-  createData(
-    2,
-    1,
-    1,
-    productImage,
-    "Samsung F-22",
-    "black",
-    customerImage,
-    "Jagadish",
-    "Sankhu",
-    2,
-    "processing",
-    "unpaid",
-    40000
-  ),
-  createData(
-    3,
-    1,
-    1,
-    productImage,
-    "Samsung F-22",
-    "black",
-    customerImage,
-    "Jagadish",
-    "Sankhu",
-    2,
-    "processing",
-    "unpaid",
-    40000
-  ),
-  createData(
-    4,
-    1,
-    1,
-    productImage,
-    "Samsung F-22",
-    "black",
-    customerImage,
-    "Jagadish",
-    "Sankhu",
-    2,
-    "processing",
-    "unpaid",
-    40000
-  ),
-  createData(
-    5,
-    1,
-    1,
-    productImage,
-    "Samsung F-22",
-    "black",
-    customerImage,
-    "Jagadish",
-    "Sankhu",
-    2,
-    "processing",
-    "unpaid",
-    40000
-  ),
+ 
   createData(
     1,
     1,
@@ -224,40 +175,17 @@ const rows = [
     "processing",
     "unpaid",
     40000
-  ),
-  createData(
-    1,
-    1,
-    1,
-    productImage,
-    "Samsung F-22",
-    "black",
-    customerImage,
-    "Jagadish",
-    "Sankhu",
-    2,
-    "processing",
-    "unpaid",
-    40000
-  ),
-  createData(
-    1,
-    1,
-    1,
-    productImage,
-    "Samsung F-22",
-    "black",
-    customerImage,
-    "Jagadish",
-    "Sankhu",
-    2,
-    "processing",
-    "unpaid",
-    40000
-  ),
+  )
 ];
 
-export default function OrdersTable() {
+export default function OrdersTable(props) {
+
+  const { activeOrderListMenu } = props;
+  const { enqueueSnackbar } = useSnackbar();
+  const [rows, setRows] = React.useState([]);
+  var myOrderList = [];
+  const [isChangeSucessfull, setIsChangeSucessfull] = React.useState(false);
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [orderToDeleteId, setOrderToDeleteId] = React.useState(null);
@@ -298,11 +226,107 @@ export default function OrdersTable() {
 
   const deleteOrder = (orderId) => {
     console.log(" order", orderId, "deleted");
+    cancelCustomerOrder(orderId).then((data) => {
+      console.log(data);
+      if (data.sucess == true) {
+        setIsChangeSucessfull(!isChangeSucessfull);
+
+        enqueueSnackbar(data.message, {
+          variant: "success",
+          autoHideDuration: 2000,
+        });
+      } else {
+        enqueueSnackbar(data.error, {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      }
+    });
   };
 
   const changeStatus = (orderId, orderStatus) => {
     console.log(orderId, orderStatus);
+    
+    updateCustomerOrderStatus(orderId, orderStatus).then((data) => {
+      console.log(data);
+      if (data.sucess == true) {
+        setIsChangeSucessfull(!isChangeSucessfull);
+        setRows([]);
+
+        enqueueSnackbar(data.message, {
+          variant: "success",
+          autoHideDuration: 2000,
+        });
+      } else {
+        enqueueSnackbar(data.error, {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      }
+    });
   };
+
+
+
+  React.useEffect(() => {
+    if (activeOrderListMenu === "All Orders") {
+      getShippedOrProcessingCustomerOrdersList().then((data) => {
+        console.log(data);
+        console.log("done");
+
+        if (data.length != myOrderList.length) {
+          data.map((myOrder) => {
+            myOrderList.push(
+              createData( 
+                myOrder.orderId,
+                myOrder.customerId,
+                myOrder.productId,
+                myOrder.productImage.image_url,
+                myOrder.productName.image_url,
+                myOrder.customerImage,
+                myOrder.customerName,
+                myOrder.quantity,
+               `${myOrder.street},${myOrder.city},${myOrder.state}` ,
+                myOrder.orderStatus,
+                myOrder.paymentStatus,
+                myOrder.totalPrice
+              )
+            );
+          });
+        }
+
+        setRows(myOrderList);
+      });
+    } else {
+      getCustomerOrderByFilterStatus(activeOrderListMenu).then((data) => {
+        console.log(data);
+        console.log("done");
+
+        if (data.length != myOrderList.length) {
+          data.map((myOrder) => {
+            myOrderList.push(
+              createData( 
+                myOrder.orderId,
+                myOrder.customerId,
+                myOrder.productId,
+                myOrder.productImage.image_url,
+                myOrder.productName.image_url,
+                myOrder.customerImage,
+                myOrder.customerName,
+                myOrder.quantity,
+               `${myOrder.street},${myOrder.city},${myOrder.state}` ,
+                myOrder.orderStatus,
+                myOrder.paymentStatus,
+                myOrder.totalPrice
+              )
+            );
+          });
+        }
+
+        setRows(myOrderList);
+      });
+    }
+  }, [isChangeSucessfull, activeOrderListMenu]);
 
   return (
     <div>
@@ -316,10 +340,9 @@ export default function OrdersTable() {
             <TableRow>
               <TableCell>Id</TableCell>
               <TableCell>Product</TableCell>
-              <TableCell>Variant</TableCell>
               <TableCell>Customer</TableCell>
               <TableCell>Qty</TableCell>
-              <TableCell>Address</TableCell>
+              <TableCell>Shipping Address</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Payment</TableCell>
               <TableCell>Total</TableCell>
@@ -355,7 +378,6 @@ export default function OrdersTable() {
                     {row.productName}
                   </Typography>
                 </TableCell>
-                <TableCell>{row.productVariant}</TableCell>
                 <TableCell>
                   <Typography
                     component={Stack}
@@ -372,9 +394,9 @@ export default function OrdersTable() {
                   </Typography>
                 </TableCell>
                 <TableCell>{row.quantity}</TableCell>
-                <TableCell>{row.deliveryAddress}</TableCell>
-                <TableCell>{row.status}</TableCell>
-                <TableCell>{row.payment}</TableCell>
+                <TableCell>{row.shippingAddress}</TableCell>
+                <TableCell>{row.orderStatus}</TableCell>
+                <TableCell>{row.paymentStatus}</TableCell>
                 <TableCell>{row.total}</TableCell>
                 <TableCell>
                   <Typography

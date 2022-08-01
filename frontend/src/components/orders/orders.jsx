@@ -168,7 +168,9 @@ function Orders() {
       </div>
 
       <div className="orders-bar">
-        <OrdersTable />
+        <OrdersTable
+           activeOrderListMenu={activeOrderListMenu}
+         />
       </div>
     </div>
   );

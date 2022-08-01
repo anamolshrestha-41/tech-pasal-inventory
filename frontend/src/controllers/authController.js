@@ -60,4 +60,10 @@ export const registerCustomer=(registerData)=>{
   }
 
 
+  export const convertSqlDateToJSDate=async(sqlDate)=>{
+    
+      return await new Date(Date.parse(sqlDate.replace(/-/g, '/')));
+ 
+  }
+
   
