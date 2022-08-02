@@ -156,9 +156,10 @@
         margin:0px;
       
     }
-    .product-description-material>ul>li{
-        display: flex;
-        align-items: center;
+    .product-description-material>div{
+      width: 100%;
+      text-align: left;
+
         margin: 0px;
       gap: 5px;
      height: 40px;

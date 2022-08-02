@@ -140,3 +140,43 @@ export const createNewProduct=(productData)=>{
       return err.response.data;
   })
   }
+
+
+
+  export const getCompleteProductDetails=(productId)=>{
+
+    return  axios.get(`${process.env.REACT_APP_API_URI}/product/details/${productId}`).then(response=>{
+      console.log(response);
+     return response.data.data;
+  }).catch(err=>{
+      console.log(err.response.data);
+      return err.response.data;
+  })
+  }
+
+
+
+  export const updateProductDetails=(productId,newProductData)=>{
+    const token =getTokenFromLocalStorage();
+    console.log(token);
+        return axios
+        .put(
+          `${process.env.REACT_APP_API_URI}/update/product/${productId}`,
+         newProductData,
+          {
+            headers: {
+                'authorization': `Bearer ${token}` ,
+              contentType: "application/json",
+            },
+            withCredentials: true,
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          return response.data;
+        })
+        .catch((err) => {
+          console.log(err.response.data);
+          return err.response.data;
+        });
+      }

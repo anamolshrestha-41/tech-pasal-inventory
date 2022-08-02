@@ -4,7 +4,7 @@ import customerImage from "../../demo/customerImage.jpg";
 import productImage from "../../demo/productImage.jpg";
 import supplierImage from "../../demo/supplierLogo.png";
 
-
+import {useParams} from 'react-router-dom';
 import { Avatar, Button, Divider, Stack, Typography } from "@mui/material";
 import OrdersTable from "../tables/orderTable";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -16,12 +16,19 @@ import SalesProductTable from "../tables/salesProductTable";
 import SupplierImportTable from "../tables/supplierImportTable";
 import DeleteConfirmationDialogModal from "../deleteConfirmationDialogModal/deleteConfirmationDialogModal";
 import UpdateSupplierFormDialog from "../updateForms/updateSupplierFormDialog";
+import { deleteSupplierByDate, getSuppierDetails, updateSupplierDetails } from "../../controllers/supplierController";
+import { useSnackbar } from "notistack";
+
+
 
 function SupplierDetails() {
+const {supplierId}=useParams();
+const { enqueueSnackbar } = useSnackbar();
   const [activeOrderListMenu, setActiveOrderListMenu] =useState("All Orders");
   const [deleteConfirmationDialogOpen, setDeleteConfirmationDialogOpen] =useState(false);
   const[updateConfirmationDialogOpen,setUpdateConfirmationDialogOpen]=useState(false);
- 
+  const[supplierDetails,setSupplieDetails]=useState(null);
+  const [isUpdate, setIsUpdate] = useState(false);
  
   const handleOrderListMenuClick = (menuList) => {
     // console.log(menuList);
@@ -43,6 +50,23 @@ const handleDeleteSupplierConfirmation = () => {
 const deleteSupplier=(supplierId)=>{
   // delete supplier fuction
   console.log("supplier deleted",supplierId);
+
+  deleteSupplierByDate(supplierId).then(data=>{
+    console.log(data);
+    if (data.sucess == true) {
+      enqueueSnackbar("import order cancelled sucessfully", {
+        variant: "success",
+        autoHideDuration: 2000,
+      });
+    } else {
+      enqueueSnackbar(data.error, {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
+    }
+    setIsUpdate(!isUpdate);
+  });
+
 }
 
 const handleOnUpdateSupplier = () => {
@@ -51,6 +75,21 @@ const handleOnUpdateSupplier = () => {
 
  const updateSupplier=(supplierId,newSupplierData)=>{
    console.log(supplierId,"data:",newSupplierData);
+   updateSupplierDetails(supplierId, newSupplierData).then((data) => {
+    console.log(data);
+    if (data.sucess == true) {
+      enqueueSnackbar(data.message, {
+        variant: "success",
+        autoHideDuration: 2000,
+      });
+    } else {
+      enqueueSnackbar(data.error, {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
+    }
+    setIsUpdate(!isUpdate);
+  });
  }
 
 
@@ -66,6 +105,18 @@ const handleOnUpdateSupplier = () => {
     });
   }, [activeOrderListMenu]);
 
+  useEffect(()=>{
+getSuppierDetails(supplierId).then(data=>{
+  console.log(data);
+  setSupplieDetails(data[0]);
+
+})
+  },[isUpdate])
+
+
+  if(!supplierDetails){
+    return <div>loading</div>
+  }
 
   return (
     <div className="supplier-d-details">
@@ -73,42 +124,50 @@ const handleOnUpdateSupplier = () => {
         <div className="supplier-information">
           <div className="supplier-d-description">
             <div className="supplier-full-details">
-              <h3>#123</h3>
-              <div>Autocad Technonogy Pvt. Ltd</div>
+              <h3>#{supplierDetails.supplierId}</h3>
+              <div>{supplierDetails.name}</div>
               <div>
-                Country:<p>India</p>
+                Country:<p>{supplierDetails.country}</p>
               </div>
               <div>
-                Address:<p>uttaranchal , New Delhi, solte street</p>
+                Address:<p>{supplierDetails.street},{supplierDetails.city},{supplierDetails.street}</p>
               </div>
               <div>
-                Email :<p>autocadtech@gmail</p>
-              </div>
-
-              <div>
-                Contact No:<p>9869194591</p>
+                Email :<p>{supplierDetails.email}</p>
               </div>
 
               <div>
-                PinCode:<p>44600</p>
+                Contact No:<p>{supplierDetails.contactNo}</p>
+              </div>
+
+              <div>
+                PinCode:<p>{supplierDetails.pinCode}</p>
               </div>
               <div>
                 P.O Box:<p>458215</p>
               </div>
+              <div>
+                Added Date:<p>{supplierDetails.addedDate.slice(0,10)}</p>
+              </div>
+              {
+                supplierDetails.removedDate &&  <div>
+                Deleted Date:<p>{supplierDetails.removedDate.slice(0,10)}</p>
+              </div>
+              }
+             
               <div style={{ display: "block", textAlign: "start" }}>
                 Description:
                 <p
                   style={{ display: "flex", color: "gray", textAlign: "start" }}
-                >
-                  we have been electronics goods including webcam ,drone,
-                  processor since 2000.We have branches in 25 countries across
-                  Asia
+                >{
+                  supplierDetails.supplierDetails
+                }
                 </p>
               </div>
             </div>
             <div className="supplier-image">
               <div>
-                <img src={supplierImage} alt="supplierImage" />
+                <img src={supplierDetails.supplierImage.image_url} alt="supplierImage" />
               </div>
             </div>
           </div>
@@ -122,9 +181,9 @@ const handleOnUpdateSupplier = () => {
               View supplier details
             </Link>
           </div> */}
-          <Divider variant="middle" />
+          {/* <Divider variant="middle" /> */}
 
-          <Divider variant="middle" />
+     
           <div className="supplier-account-update">
             <h3>
               <SettingsIcon />
@@ -138,7 +197,7 @@ const handleOnUpdateSupplier = () => {
         </div>
       </div>
 
-      <div className="product-import-d-details">
+      {/* <div className="product-import-d-details">
         <h3>Imports</h3>
         <div className="supplier-import-filter-bar">
         <Button
@@ -173,12 +232,12 @@ const handleOnUpdateSupplier = () => {
       <div className="my-orders-bar">
      <SupplierImportTable/>
       </div>
-      </div>
+      </div> */}
 
       <div>
   {/* update supplier form */}
   <UpdateSupplierFormDialog
-  supplierToUpdateId={`123`}
+  supplierToUpdateId={supplierId}
   updateConfirmationDialogOpen={updateConfirmationDialogOpen}
   setUpdateConfirmationDialogOpen={setUpdateConfirmationDialogOpen}
   updateSupplier={updateSupplier}
@@ -190,7 +249,7 @@ const handleOnUpdateSupplier = () => {
       <div >
       {/* dialog for deleteconfirmaton */}
         <DeleteConfirmationDialogModal
-        deletionId={`123`}
+        deletionId={supplierId}
           deleteConfirmationDialogOpen={deleteConfirmationDialogOpen}
           setDeleteConfirmationDialogOpen={setDeleteConfirmationDialogOpen}
           deleteConfirmed={deleteSupplier}

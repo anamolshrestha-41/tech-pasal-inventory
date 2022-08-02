@@ -10,12 +10,20 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import SettingsIcon from "@mui/icons-material/Settings";
 import CustomerOrderTable from "../tables/customerOrderTable";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link,useParams } from "react-router-dom";
 import SalesProductTable from "../tables/salesProductTable";
 import DeleteConfirmationDialogModal from "../deleteConfirmationDialogModal/deleteConfirmationDialogModal";
 import UpdateProductFormDialog from "../updateForms/updateProductFormDialog";
+import { useSnackbar } from "notistack";
+import { deleteProductByStatus, getCompleteProductDetails, updateProductDetails } from "../../controllers/productController";
 
 function ProductDetails() {
+
+  const { enqueueSnackbar } = useSnackbar();
+  const {productId}=useParams();
+  const [productData, setProductData] = useState(null);
+  const [isUpdate, setIsUpdate] = useState(false);
+
   const [deleteConfirmationDialogOpen, setDeleteConfirmationDialogOpen] =
     useState(false);
     const[updateConfirmationDialogOpen,setUpdateConfirmationDialogOpen]=useState(false);
@@ -32,6 +40,21 @@ function ProductDetails() {
   const deleteProduct=(productId)=>{
     // delete product fuction
     console.log("product deleted",productId);
+    deleteProductByStatus(productId).then(data=>{
+      console.log(data);
+      if (data.sucess == true) {
+        enqueueSnackbar("product deleted sucessffully", {
+          variant: "success",
+          autoHideDuration: 2000,
+        });
+      } else {
+        enqueueSnackbar(data.error, {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      }
+      setIsUpdate(!isUpdate);
+    });
   }
 
 
@@ -41,7 +64,35 @@ function ProductDetails() {
 
   const updateProduct=(productId,newProductData)=>{
     console.log(productId,"data:",newProductData);
+    updateProductDetails(productId, newProductData).then((data) => {
+      console.log(data);
+      if (data.sucess == true) {
+        enqueueSnackbar(data.message, {
+          variant: "success",
+          autoHideDuration: 2000,
+        });
+      } else {
+        enqueueSnackbar(data.error, {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      }
+      setIsUpdate(!isUpdate);
+    });
   }
+
+  useEffect(() => {
+    getCompleteProductDetails(productId).then((data) => {
+      console.log(data);
+      setProductData(data[0]);
+    });
+  }, [isUpdate]);
+
+  if (!productData) {
+    return <div>loading</div>;
+  }
+
+
 
   return (
     <div className="product-details">
@@ -49,63 +100,62 @@ function ProductDetails() {
         <div className="product-information">
           <div className="product-description">
             <div className="product-full-details">
-              <h3>#123</h3>
-              <div>Samsung F22</div>
+              <h3>#{productData.productId}</h3>
+              <div>{productData.productName}</div>
               <div>
-                Brand:<p>Samsung</p>
+                Brand:<p>{productData.brand}</p>
               </div>
               <div>
-                Category:<p>mobile</p>
+                Category:<p>{productData.category}</p>
               </div>
+           
+
               <div>
-                Variant:<p>black</p>
+                @Price:<p>{productData.price}</p>
               </div>
 
               <div>
-                @Price:<p>100000</p>
-              </div>
-
-              <div>
-                Stock:<p>500</p>
+                Stock:<p>{productData.stock}</p>
               </div>
               <div>
-                Product Status:<p>Published</p>
+                Product Status:<p>{productData.productStatus}</p>
               </div>
+              <div>
+              VAT:<p>{productData.vat}%</p>
+              </div>
+              <div>
+                Custom Duty:<p>{productData.customDuty}%</p>
+              </div>
+              <div>
+                Added Data:<p>{productData.addedDate.slice(0,10)}</p>
+              </div>
+              {
+                productData.deletedDate &&  <div>
+                Deleted Date:<p>{productData.deletedDate.slice(0,10)}</p>
+              </div>
+              }
+             
 
               <div className="product-description-material">
                 <h6> Description:</h6>
 
-                <ul>
-                  <li>
-                    Weight:<p>2kg</p>
-                  </li>
-                  <li>
-                    Screen:<p>90hz</p>
-                  </li>
-                  <li>
-                    Processor:<p>Heloo G80</p>
-                  </li>
-                  <li>
-                    Camera:
-                    <p>48Mp Main Camera,2MP Micro,2MP Macro,8MP front camera</p>
-                  </li>
-                </ul>
-                <div></div>
+             
+                <div>   {productData.productDescription}</div>
               </div>
             </div>
             <div className="product-image">
               <div>
-                <img src={productImage} alt="productImage" />
+                <img src={productData.productImage.image_url} alt="productImage" />
               </div>
             </div>
           </div>
         </div>
         <div className="product-supplier-info">
           <div className="supplier-profile-view">
-            <Avatar sx={{ width: 150, height: 150 }} src={supplierImage} />
-            <h4>Autocad Technology Pvt. Ltd</h4>
-            <h5>autocadtech@gmail.com</h5>
-            <Link to={`/Supplier/123`} style={{ color: "blue" }}>
+            <Avatar sx={{ width: 150, height: 150 }} src={productData.supplierImage.image_url} />
+            <h4>{productData.supplierName}</h4>
+            <h5>{productData.supplierEmail}</h5>
+            <Link to={`/Supplier/${productData.supplierId}`} style={{ color: "blue" }}>
               View supplier details
             </Link>
           </div>
@@ -131,7 +181,7 @@ function ProductDetails() {
         </div>
       </div>
 
-      <div className="product-import-details">
+      {/* <div className="product-import-details">
         <h3>Import Details</h3>
         <div>
           @Custom Duty:<p>14%</p>
@@ -153,12 +203,12 @@ function ProductDetails() {
       <div className="product-sales-details">
         <h3>Sales Details</h3>
         <SalesProductTable />
-      </div>
+      </div> */}
 
 <div>
   {/* update product form */}
   <UpdateProductFormDialog
-  productToUpdateId={`123`}
+  productToUpdateId={productId}
   updateConfirmationDialogOpen={updateConfirmationDialogOpen}
   setUpdateConfirmationDialogOpen={setUpdateConfirmationDialogOpen}
   updateProduct={updateProduct}
@@ -170,7 +220,7 @@ function ProductDetails() {
       <div >
       {/* dialog for deleteconfirmaton */}
         <DeleteConfirmationDialogModal
-         deletionId={`123`}
+         deletionId={productId}
           deleteConfirmationDialogOpen={deleteConfirmationDialogOpen}
           setDeleteConfirmationDialogOpen={setDeleteConfirmationDialogOpen}
           deleteConfirmed={deleteProduct}

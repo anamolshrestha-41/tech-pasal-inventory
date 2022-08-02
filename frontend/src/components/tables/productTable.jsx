@@ -384,7 +384,7 @@ export default function ProductsTable(props) {
             ).map((row) => (
               <TableRow
                 component={Link}
-                to={`/Product/123`}
+                to={`/Product/${row.productId}`}
                 key={row.productId}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >

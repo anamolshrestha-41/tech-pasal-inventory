@@ -165,6 +165,21 @@ export const getCustomerOrderCompleteDetails= (orderId) => {
 
 
 
+export const getCustomerCompleteDetails= (customerId) => {
+  return axios
+    .get(`${process.env.REACT_APP_API_URI}/customer/details/${customerId}`)
+    .then((response) => {
+      console.log(response);
+      return response.data.data;
+    })
+    .catch((err) => {
+      console.log(err.response.data);
+      return err.response.data;
+    });
+};
+
+
+
 
 export const updateCustomerOrderDetails = (orderId, newOrderData) => {
   const token = getTokenFromLocalStorage();
@@ -190,3 +205,21 @@ export const updateCustomerOrderDetails = (orderId, newOrderData) => {
       return err.response.data;
     });
 };
+
+
+export const getTotalProfit = () => {
+  return axios
+    .get(
+      `${process.env.REACT_APP_API_URI}/profit`
+    )
+    .then((response) => {
+      console.log(response);
+      return response.data.data;
+    })
+    .catch((err) => {
+      console.log(err.response.data);
+      return err.response.data;
+    });
+};
+
+

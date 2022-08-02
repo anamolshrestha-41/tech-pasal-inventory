@@ -12,9 +12,16 @@ import { useEffect } from "react";
 import { getProductTotalcount } from "../../controllers/productController";
 import { getImportTotalcount, getTopImports } from "../../controllers/importOrderController";
 import { getCustomerTotalcount } from "../../controllers/customerController";
-import { getCustomerOrderTotalcount, getTopSales, getTotalRevenue } from "../../controllers/customerOrderController";
+import { getCustomerOrderTotalcount, getTopSales, getTotalProfit, getTotalRevenue } from "../../controllers/customerOrderController";
 import { Avatar, Stack, Typography } from "@mui/material";
 import { convertSqlDateToJSDate } from "../../controllers/authController";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import ImportExportIcon from "@mui/icons-material/ImportExport";
+import PersonIcon from "@mui/icons-material/Person";
+import TimelineIcon from "@mui/icons-material/Timeline";
+import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import AdUnitsIcon from '@mui/icons-material/AdUnits';
 
 function createImportData(
   myOrderId,
@@ -124,6 +131,7 @@ function Dashboard() {
   const[revenue,setRevenue]=useState(null);
   const[salesRows,setSalesRows]=useState(null);
   const[importRows,setImportRows]=useState(null);
+  const[profit,setProfit]=useState(null);
 
   React.useEffect(()=>{
     getProductTotalcount().then(data=>{
@@ -150,6 +158,12 @@ function Dashboard() {
     getTotalRevenue().then(data=>{
       console.log(data);
       setRevenue(data[0].revenue)
+      
+    });
+
+    getTotalProfit().then(data=>{
+      console.log(data);
+      setProfit(data[0].profit)
       
     });
 
@@ -182,7 +196,7 @@ getTopImports().then(data=>{
   return (
     <div className="dashboard">
       <h3>Overview dashboard</h3>
-      <div className="dashboard-details">
+      {/* <div className="dashboard-details">
         <div>
           <p>Total Revenue</p>
           <p>{revenue}</p>
@@ -202,6 +216,79 @@ getTopImports().then(data=>{
         <div>
           <p>Total Customers</p>
           <p>{customerCount}</p>
+        </div>
+      </div> */}
+
+      <div className="overview-analytics-bar-d">
+        <div className="overview-analytics-bar-item-d">
+          <h3>
+            <div>
+              <AccountBalanceWalletIcon />
+              Revenue
+            </div>
+            <TimelineIcon sx={{ width: 40, height: 40 }} />
+          </h3>
+          <div>Nrs.{parseInt(revenue)}</div>
+          <div className="analytics-bar-item-update-d">
+            {/* <ArrowUpwardIcon sx={{ width: 15, height: 15 }} /> */}
+            {/* 13%/Months */}
+          </div>
+        </div>
+        <div className="overview-analytics-bar-item-d">
+          <h3>
+            <div>
+              <ImportExportIcon />
+              Imports
+            </div>
+            <TimelineIcon sx={{ width: 40, height: 40 }} />
+          </h3>
+          <div>{importCount}</div>
+          <div className="analytics-bar-item-update-d">
+            {/* <ArrowUpwardIcon sx={{ width: 15, height: 15 }} /> */}
+            {/* 13%/Months */}
+          </div>
+        </div>
+        <div className="overview-analytics-bar-item-d">
+          <h3>
+            <div>
+              <PersonIcon />
+              Customers
+            </div>
+            <TimelineIcon sx={{ width: 40, height: 40 }} />
+          </h3>
+          <div>{customerCount}</div>
+          <div className="analytics-bar-item-update-d">
+            {/* <ArrowUpwardIcon sx={{ width: 15, height: 15 }} /> */}
+            {/* 13%/Months */}
+          </div>
+        </div>
+        <div className="overview-analytics-bar-item-d">
+          <h3>
+            <div>
+              <MonetizationOnIcon />
+              Profit
+            </div>
+            <TimelineIcon sx={{ width: 40, height: 40 }} />
+          </h3>
+          <div>Nrs.{parseInt(profit)}</div>
+          <div className="analytics-bar-item-update-d">
+            {/* <ArrowUpwardIcon sx={{ width: 15, height: 15 }} /> */}
+            {/* 13%/Months */}
+          </div>
+        </div>
+        <div className="overview-analytics-bar-item-d">
+          <h3>
+            <div>
+              <AdUnitsIcon />
+              Products
+            </div>
+            <TimelineIcon sx={{ width: 40, height: 40 }} />
+          </h3>
+          <div>{productCount}</div>
+          <div className="analytics-bar-item-update-d">
+            {/* <ArrowUpwardIcon sx={{ width: 15, height: 15 }} /> */}
+            {/* 13%/Months */}
+          </div>
         </div>
       </div>
 

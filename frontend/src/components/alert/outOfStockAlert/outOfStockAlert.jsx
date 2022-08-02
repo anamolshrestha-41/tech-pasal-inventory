@@ -10,7 +10,7 @@ function OutOfStockAlert(props) {
         </div>
         <div className="out-of-stock-alert-description">
           
-            {productName} has been sold out completely
+           <span style={{color:"red"}}>{productName} </span> has been sold out completely
         </div>
     </div>  );
 }

@@ -52,18 +52,14 @@ export default function UpdateCustomerFormDialog(props) {
 
   const [newCustomerData, setNewCustomerData] = React.useState({
     name: "",
-    gender: "",
-    dob: "",
     email: "",
     contactNo: "",
     state: "",
     city: "",
     street: "",
-    panNo: "",
-    accountMode:"",
+    customerType:"",
   });
-  const { name, gender, dob, email, contactNo, state, city, street, panNo ,accountMode} =
-    newCustomerData;
+  const { name, email, contactNo, state, city, street,customerType} =newCustomerData;
 
   const handleDataChange = (e) => {
     e.preventDefault();
@@ -112,52 +108,8 @@ export default function UpdateCustomerFormDialog(props) {
               onChange={handleDataChange}
             />
           </FormControl>
-          <FormControl
-            fullWidth
-            sx={{ marginTop: "20px", marginBottom: "20px" }}
-            variant="standard"
-          >
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                label="Date of Birth"
-                
-                value={dob}
-                onChange={(newValue) => {
-                    setNewCustomerData({...newCustomerData,dob:newValue})
-                  }}
-                renderInput={(params) => <TextField {...params} />}
-                disableHighlightToday
-              />
-            </LocalizationProvider>
-          </FormControl>
-
-          <FormControl>
-            <FormLabel id="demo-row-radio-buttons-group-label">
-              Gender
-              
-            </FormLabel>
-
-            <RadioGroup
-              row
-              aria-labelledby="demo-row-radio-buttons-group-label"
-              name="gender"
-              value={gender}
-              onChange={handleDataChange}
-            >
-              
-              <FormControlLabel value="male" control={<Radio />} label="Male" />
-              <FormControlLabel
-                value="female"
-                control={<Radio />}
-                label="Female"
-              />
-              <FormControlLabel
-                value="other"
-                control={<Radio />}
-                label="Other"
-              />
-            </RadioGroup>
-          </FormControl>
+      
+     
 
           <FormControl
             fullWidth
@@ -202,15 +154,7 @@ export default function UpdateCustomerFormDialog(props) {
               name="city"
               onChange={handleDataChange}
             />
-            <TextField
-              id="standard-basic"
-              required
-              label="Street"
-              variant="standard"
-              value={street}
-              name="street"
-              onChange={handleDataChange}
-            />
+            
           </FormControl>
 
           <FormControl
@@ -224,6 +168,15 @@ export default function UpdateCustomerFormDialog(props) {
             variant="standard"
           >
             <TextField
+              id="standard-basic"
+              required
+              label="Street"
+              variant="standard"
+              value={street}
+              name="street"
+              onChange={handleDataChange}
+            />
+            <TextField
               type={`number`}
               min="0"
               id="standard-basic"
@@ -234,30 +187,19 @@ export default function UpdateCustomerFormDialog(props) {
               name="contactNo"
               onChange={handleDataChange}
             />
-            <TextField
-              type={`number`}
-              min="0"
-              id="standard-basic"
-              label="PanNo"
-              variant="standard"
-              required
-              value={panNo}
-              name="panNo"
-              onChange={handleDataChange}
-            />
           </FormControl>
 
           <FormControl>
             <FormLabel id="demo-row-radio-buttons-group-label">
-              Account Mode
+            Customer Type
               
             </FormLabel>
 
             <RadioGroup
               row
               aria-labelledby="demo-row-radio-buttons-group-label"
-              name="accountMode"
-              value={accountMode}
+              name="customerType"
+              value={customerType}
               onChange={handleDataChange}
              
             >

@@ -283,7 +283,7 @@ export default function OrdersTable(props) {
                 myOrder.productId,
                 myOrder.productImage.image_url,
                 myOrder.productName.image_url,
-                myOrder.customerImage,
+                myOrder.customerImage.image_url,
                 myOrder.customerName,
                 myOrder.quantity,
                `${myOrder.street},${myOrder.city},${myOrder.state}` ,
@@ -397,7 +397,7 @@ export default function OrdersTable(props) {
                 <TableCell>{row.shippingAddress}</TableCell>
                 <TableCell>{row.orderStatus}</TableCell>
                 <TableCell>{row.paymentStatus}</TableCell>
-                <TableCell>{row.total}</TableCell>
+                <TableCell>{parseInt(row.total)}</TableCell>
                 <TableCell>
                   <Typography
                     component={Stack}

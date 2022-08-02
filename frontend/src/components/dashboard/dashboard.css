@@ -40,3 +40,53 @@ justify-content: space-between;
     padding: 20px;
 }
 
+.analytics{
+
+}
+
+.overview-analytics-bar-d{
+    display: flex;
+    /* background-color: white; */
+    
+}
+
+.overview-analytics-bar-item-d{
+background-color:white;
+width:25%;
+border-radius: 5px;
+margin: 2px;
+padding: 5px;
+padding-left: 25px;
+
+}
+
+
+.overview-analytics-bar-item-d>h3{
+    font-size: 20px !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.overview-analytics-bar-item-d>h3>div{
+    display: flex;
+    gap: 10px;
+ 
+}
+
+.overview-analytics-bar-item-d>div{
+    margin-right: 25px;
+    font-size: 17px;
+    font-weight: 600;
+    text-align: start;
+    text-align: center;
+    /* background-color: red; */
+}
+.analytics-bar-item-update-d{
+    font-size: 8px !important;
+    color: green;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+ 
+
+}
