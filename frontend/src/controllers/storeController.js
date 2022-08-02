@@ -24,3 +24,15 @@ export const getProductsForStore=()=>{
       return err.response.data;
   })
   }
+
+
+  export const getProfitForStoreByProductId=(productId)=>{
+
+    return  axios.get(`${process.env.REACT_APP_API_URI}/profit/product/${productId}`).then(response=>{
+      console.log(response);
+     return response.data;
+  }).catch(err=>{
+      console.log(err.response.data);
+      return err.response.data;
+  })
+  }

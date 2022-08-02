@@ -43,6 +43,12 @@ flex-grow: 0;
     /* background-color: pink; */
 
 }
+.customer-profile-details>h3{
+    font-size: 24px;
+    text-align: left;
+    margin: 0px;
+    padding-left: 5px;
+}
 .customer-profile-details>div{
     display: flex;
     font-weight: 600;

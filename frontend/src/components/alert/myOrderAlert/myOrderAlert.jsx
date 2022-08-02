@@ -10,7 +10,7 @@ function MyOrderAlert(props) {
         </div>
         <div className="my-order-alert-description">
           
-           Time to order. Only {productStock} units of {productName} left in stock.
+           Time to order. Only <span style={{color:"red"}}>{productStock} units</span>  of <span style={{color:"red"}}>{productName} </span>left in stock.
         </div>
     </div>  );
 }

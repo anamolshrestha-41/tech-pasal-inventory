@@ -16,11 +16,7 @@ function ManageAccount() {
     }
 
     return ( <div className="manage-account">
-       <div onClick={handleClick}>click me</div>
-        manage account
-        {
-           isAdmin && "jagaidsh"
-        }
+       Coming soon
         
        
        

@@ -50,13 +50,13 @@ export default function UpdateOrderFormDialog(props) {
   const [newOrderData, setNewOrderData] = React.useState({
    quantity:"",
    orderStatus:"",
-   payment:"",
+   paymentStatus:"",
    paymentMode:"",
   });
   const {
     quantity,
     orderStatus,
-    payment,
+    paymentStatus,
     paymentMode
   } = newOrderData;
 
@@ -75,6 +75,8 @@ export default function UpdateOrderFormDialog(props) {
     updateOrder(orderToUpdateId, newOrderData);
     handleClose();
   };
+
+  
 
   return (
     <div>
@@ -152,15 +154,15 @@ export default function UpdateOrderFormDialog(props) {
           </FormControl>
           <FormControl fullWidth>
             <FormLabel id="demo-row-radio-buttons-group-label">
-            Payment
+            Payment Status
               
             </FormLabel>
 
             <RadioGroup
               row
               aria-labelledby="demo-row-radio-buttons-group-label"
-              name="payment"
-              value={payment}
+              name="paymentStatus"
+              value={paymentStatus}
               onChange={handleDataChange}
             >
               

@@ -15,9 +15,10 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 import FormLabel from '@mui/material/FormLabel';
+import { UserContext } from "../../userContext";
 
 
-const categoryList = [
+const categoryLists= [
   "mobile",
   "laptop",
   "gaming console",
@@ -36,6 +37,10 @@ const supplierList = [
 ];
 
 export default function UpdateProductFormDialog(props) {
+  const value=React.useContext(UserContext);
+  const {categoryList}=value;
+  const {supplierList}=value;
+
   const {
     productToUpdateId,
     updateProduct,
@@ -50,11 +55,10 @@ export default function UpdateProductFormDialog(props) {
     brand: "",
     category: "",
     supplier:"",
-    variant: "",
     price: "",
     stock: "",
     productStatus: "",
-    description: "",
+    productDescription: "",
   });
   const {
     name,
@@ -65,7 +69,7 @@ export default function UpdateProductFormDialog(props) {
     stock,
     price,
     productStatus,
-    description,
+    productDescription,
   } = newProductData;
 
   const handleDataChange = (e) => {
@@ -129,20 +133,7 @@ export default function UpdateProductFormDialog(props) {
               onChange={handleDataChange}
             />
           </FormControl>
-          <FormControl
-            fullWidth
-            sx={{ marginTop: "20px", marginBottom: "20px" }}
-            variant="standard"
-          >
-            <InputLabel htmlFor="standard-adornment-email">Variant</InputLabel>
-            <Input
-              id="standard-adornment-email"
-              required
-              name="variant"
-              value={variant}
-              onChange={handleDataChange}
-            />
-          </FormControl>
+       
 
           <FormControl
             fullWidth
@@ -163,13 +154,11 @@ export default function UpdateProductFormDialog(props) {
               sx={{ textAlign: "left" }}
             >
               {categoryList.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {option}
-                </MenuItem>
-              ))}
+            <MenuItem key={option.categoryId} value={option.name}>{option.name}</MenuItem>
+            ))}
             </Select>
           </FormControl>
-          <FormControl
+          {/* <FormControl
             fullWidth
             sx={{ marginTop: "20px", marginBottom: "20px" }}
             variant="standard"
@@ -193,7 +182,7 @@ export default function UpdateProductFormDialog(props) {
                 </MenuItem>
               ))}
             </Select>
-          </FormControl>
+          </FormControl> */}
 
           <FormControl
             fullWidth
@@ -257,6 +246,29 @@ export default function UpdateProductFormDialog(props) {
         
       </RadioGroup>
     </FormControl>
+    <div>
+            <InputLabel
+              htmlFor="standard-adornment-name"
+              style={{ textAlign: "left" }}
+            >
+              Product Description
+            </InputLabel>
+            <FormControl
+              fullWidth
+              sx={{ marginTop: "0px", marginBottom: "20px" }}
+              variant="standard"
+            >
+              <TextareaAutosize
+                aria-label="empty textarea"
+                required
+                placeholder="Empty"
+                value={productDescription}
+                name="productDescription"
+                onChange={handleDataChange}
+                style={{ width: "100%", minHeight: "100px", fontSize: "16px" }}
+              />
+            </FormControl>
+          </div>
 
         </DialogContent>
         <DialogActions>

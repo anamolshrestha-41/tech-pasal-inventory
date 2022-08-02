@@ -40,6 +40,10 @@ function Store() {
       console.log(products);
     });
   }, []);
+
+  if(!products){
+    return <div>loading</div>
+  }
   return (
     <div className="store">
       <div className="category-filter-bar">

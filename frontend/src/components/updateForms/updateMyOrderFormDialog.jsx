@@ -47,10 +47,10 @@ export default function UpdateMyOrderFormDialog(props) {
   const [newMyOrderData, setNewMyOrderData] = React.useState({
     quantity: "",
     myOrderStatus: "",
-    payment: "",
+    paymentStatus: "",
     paymentMode: "",
   });
-  const { quantity, myOrderStatus, payment, paymentMode } = newMyOrderData;
+  const { quantity, myOrderStatus, paymentStatus, paymentMode } = newMyOrderData;
 
   const handleDataChange = (e) => {
     e.preventDefault();
@@ -145,8 +145,8 @@ export default function UpdateMyOrderFormDialog(props) {
             <RadioGroup
               row
               aria-labelledby="demo-row-radio-buttons-group-label"
-              name="payment"
-              value={payment}
+              name="paymentMode"
+              value={paymentMode}
               onChange={handleDataChange}
             >
               <FormControlLabel
@@ -163,14 +163,14 @@ export default function UpdateMyOrderFormDialog(props) {
           </FormControl>
           <FormControl fullWidth>
             <FormLabel id="demo-row-radio-buttons-group-label">
-              Payment Mode
+              Payment Status
             </FormLabel>
 
             <RadioGroup
               row
               aria-labelledby="demo-row-radio-buttons-group-label"
-              name="paymentMode"
-              value={paymentMode}
+              name="paymentStatus"
+              value={paymentStatus}
               onChange={handleDataChange}
             >
               <FormControlLabel

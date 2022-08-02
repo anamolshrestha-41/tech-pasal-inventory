@@ -56,7 +56,7 @@ export default function UpdateSupplierFormDialog(props) {
     street: "",
     pinCode: "",
     poBox: "",
-    details: "",
+    supplierDetails: "",
   });
   const {
     name,
@@ -68,7 +68,7 @@ export default function UpdateSupplierFormDialog(props) {
     street,
     pinCode,
     poBox,
-    details,
+    supplierDetails,
   } = newSupplierData;
 
   const handleDataChange = (e) => {
@@ -258,8 +258,8 @@ export default function UpdateSupplierFormDialog(props) {
                 aria-label="empty textarea"
                 required
                 placeholder="Empty"
-                value={details}
-                name="details"
+                value={supplierDetails}
+                name="supplierDetails"
                 onChange={handleDataChange}
                 style={{ width: "100%", minHeight: "100px", fontSize: "16px" }}
               />

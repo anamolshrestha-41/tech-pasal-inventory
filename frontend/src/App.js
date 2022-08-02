@@ -16,11 +16,26 @@ import { Store } from "@mui/icons-material";
 import { getAllActiveCategory } from "./controllers/categoryController";
 import { getAllActiveSuppliers } from "./controllers/supplierController";
 
+
 function App() {
   const[isAdmin,setIsAdmin]=useState(true);
   const location = useLocation();
   const[categoryList,setCategoryList]=useState(null);
   const[supplierList,setSupplierList]=useState(null);
+  const[checkLoginStatus,setCheckLoginStatus]=useState(false);
+
+
+  useEffect(()=>{
+const role=localStorage.getItem('tech_role')
+if(role=="admin"){
+  setIsAdmin(true);
+}else{
+  setIsAdmin(false);
+}
+
+console.log("dddddddddddddddddddddddddddddddddd");
+  },[checkLoginStatus])
+
   useEffect(() => {
     console.log(location.pathname);
     getAllActiveCategory().then((data=>{
@@ -34,9 +49,11 @@ function App() {
     })
 
   }, []);
+
+
   return (
  
-      <UserContext.Provider value={{adminControl:{isAdmin,setIsAdmin},categoryList:categoryList,supplierList:supplierList}}>
+      <UserContext.Provider value={{adminControl:{isAdmin,setIsAdmin},categoryList:categoryList,supplierList:supplierList,checkLogin:{checkLoginStatus,setCheckLoginStatus}}}>
         <div className="app">
       <Routes>
         <Route exact path="/" element={<Login />}></Route>

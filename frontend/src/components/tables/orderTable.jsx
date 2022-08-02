@@ -283,7 +283,7 @@ export default function OrdersTable(props) {
                 myOrder.productId,
                 myOrder.productImage.image_url,
                 myOrder.productName.image_url,
-                myOrder.customerImage,
+                myOrder.customerImage.image_url,
                 myOrder.customerName,
                 myOrder.quantity,
                `${myOrder.street},${myOrder.city},${myOrder.state}` ,
@@ -356,10 +356,10 @@ export default function OrdersTable(props) {
               : rows
             ).map((row) => (
               <TableRow
-                key={row.productId}
+                key={row.orderId}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 component={Link}
-                to={`/order/123`}
+                to={`/order/${row.orderId}`}
               >
                 <TableCell sx={{ width: 5 }}>{row.orderId}</TableCell>
 
@@ -397,7 +397,7 @@ export default function OrdersTable(props) {
                 <TableCell>{row.shippingAddress}</TableCell>
                 <TableCell>{row.orderStatus}</TableCell>
                 <TableCell>{row.paymentStatus}</TableCell>
-                <TableCell>{row.total}</TableCell>
+                <TableCell>{parseInt(row.total)}</TableCell>
                 <TableCell>
                   <Typography
                     component={Stack}

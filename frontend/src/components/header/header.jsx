@@ -22,6 +22,9 @@ import {useNavigate} from 'react-router-dom';
 import {Link} from 'react-router-dom';
 import { useContext } from "react";
 import { UserContext } from "../../userContext";
+import { useEffect } from "react";
+import { getCustomerNameAndImage } from "../../controllers/customerController";
+import { useState } from "react";
 
 function Header() {
   const value=useContext(UserContext);
@@ -29,6 +32,8 @@ function Header() {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
   const navigate=useNavigate();
+  const[user,setUser]=useState(null);
+  const[userImage,setUserImage]=useState(null);
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -42,7 +47,24 @@ function Header() {
     }
     setOpen(false);
   };
+
+  const logOut=()=>{
+    localStorage.removeItem('token');
+    localStorage.removeItem('tech_role');
+    localStorage.removeItem("tech_user_email");
+    navigate('/');
+  }
  
+  useEffect(()=>{
+const email=localStorage.getItem("tech_user_email");
+console.log(email);
+getCustomerNameAndImage(email).then(data=>{
+  console.log(data);
+  setUser(data.data[0].name);
+  setUserImage(data.data[0].profileImage.image_url);
+  
+},[])
+  })
 
   return (
     <div className="header">
@@ -73,10 +95,11 @@ function Header() {
           aria-expanded={open ? "true" : undefined}
           aria-haspopup="true"
           onClick={handleToggle}
+          sx={{backgroundColor:"#e2e2e2"}}
         >
           <div className="profile">
-            <Avatar sx={{ backgroundColor: "pink", color: "black" }}>J</Avatar>
-            <div className="profile-name">Jagadish</div>
+            <Avatar sx={{ backgroundColor: "pink", color: "black" }} src={userImage}>J</Avatar>
+            <div className="profile-name">{user}</div>
           </div>
         </Button>
         <Popper
@@ -118,7 +141,7 @@ function Header() {
                     <MenuItem name="Store" onClick={handleClose} className="profile-menu-item">
                       <StoreIcon/>
                       Store</MenuItem>
-                    <MenuItem name="LogOut" onClick={handleClose} className="profile-menu-item">
+                    <MenuItem name="LogOut" onClick={logOut} className="profile-menu-item">
                       <LogoutIcon/>
                       Logout</MenuItem>
                   </MenuList>

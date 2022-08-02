@@ -19,7 +19,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getProductFullDetailsForStoreOrder } from "../../controllers/storeController";
+import { getProductFullDetailsForStoreOrder, getProfitForStoreByProductId } from "../../controllers/storeController";
 import { createNewCustomerOrder } from "../../controllers/customerOrderController";
 import { useSnackbar } from 'notistack';
 
@@ -30,6 +30,7 @@ function StoreProductDetails() {
   const[productDetails,setProductDetails]=useState(null);
 
   const [importQuantity, setImportQuantity] = useState(1);
+  const[profit,setProfit]=useState(null);
 
   const handleUpdateImportQuantity = (e, update) => {
     e.stopPropagation();
@@ -59,13 +60,19 @@ function StoreProductDetails() {
 getProductFullDetailsForStoreOrder(productId).then(data=>{
   console.log(data);
   setProductDetails(data[0]);
+});
+
+getProfitForStoreByProductId(productId).then(data=>{
+  console.log(data);
+  setProfit(data.profit)
 })
+
   },[])
 
   if(!productDetails){
     return <div>loading</div>
   }
-  const{name,brand,category,price,stock,productImage,productDescription,vat}=productDetails;
+  const{name,brand,category,price,stock,productImage,productDescription,customDuty,vat}=productDetails;
 
 
 
@@ -86,7 +93,7 @@ getProductFullDetailsForStoreOrder(productId).then(data=>{
             
 
               <div>
-                Price:<p>Nrs.{price}</p>
+                Price:<p>Nrs.{parseInt(price*(1+profit/100)*(1+customDuty/100))}</p>
               </div>
 
               <div>
@@ -182,7 +189,7 @@ getProductFullDetailsForStoreOrder(productId).then(data=>{
               Quantity:<p>{importQuantity}</p>
             </div>
             <div>
-              Price:<p>Nrs.{price}</p>
+              Price:<p>Nrs.{price*(1+profit/100)}</p>
             </div>
             <div>
               VAT:<p>{vat}%</p>
@@ -190,7 +197,7 @@ getProductFullDetailsForStoreOrder(productId).then(data=>{
 
             <div style={{ color: "green", fontWeight: "bold" }}>
               Total Cost:
-              <p style={{ color: "green", fontWeight: "bold" }}>NRs.{(price*importQuantity*(1+vat/100)).toFixed(0)}</p>
+              <p style={{ color: "green", fontWeight: "bold" }}>NRs.{(price*(1+profit/100)*importQuantity*(1+vat/100)*(1+customDuty/100)).toFixed(0)}</p>
             </div>
           </div>
           <Button

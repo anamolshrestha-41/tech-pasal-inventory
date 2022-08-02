@@ -2,6 +2,11 @@
   display: flex;
 }
 
+.customer-shipping-address{
+  display: flex;
+  flex-direction: column;
+}
+
 .customers-bar {
   /* background-color: red;  */
   display: flex;
