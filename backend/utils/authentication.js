@@ -10,7 +10,7 @@ exports.isSignedIn = async (req, res, next) => {
     const decodedData = await verifytoken(token);
 
     if (decodedData) {
-      // console.log(decodedData);
+   
       req.user = decodedData; // user prrperty is added to req if token is verified
       return next();
     } else {
@@ -33,7 +33,7 @@ exports.isAdmin= async (req, res, next) => {
     if (decodedData) {
       // console.log(decodedData);
     
-       // user prrperty is added to req if token is verified
+     
 
        if(decodedData.role==="admin"){
         req.user = decodedData;
