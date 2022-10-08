@@ -255,10 +255,10 @@ const deleteCustomer=(customerId)=>{
           }
          
 
-          <Button variant="contained" disabled={!selectedCustomerId}>Update</Button>
+          {/* <Button variant="contained" disabled={!selectedCustomerId}>Update</Button>
           <Button variant="contained"disabled={!selectedCustomerId} color="error" onClick={handleDeleteCustomerConfirmation}>
             Delete
-          </Button>
+          </Button> */}
           {
             selectedCustomerId &&  <Link to ={`/Customer/${selectedCustomerId}`} style={{color:"blue"}}>View customer  details</Link>
           }
